@@ -1,0 +1,2346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistics for Engineers &amp; Technologists</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --ink:#12263A;
+  --ink-soft:#3E5568;
+  --paper:#EEF2F6;
+  --panel:#FFFFFF;
+  --blue:#2C5F8A;
+  --blue-deep:#1B3A5C;
+  --blue-light:#DCE8F0;
+  --amber:#C7841F;
+  --amber-bg:#FBF0DC;
+  --orange:#C4491F;
+  --orange-bg:#FBE7DE;
+  --green:#3F7A4E;
+  --green-bg:#E4F1E6;
+  --line:#C5D3DD;
+  --mono-bg:#0F2033;
+  --mono-ink:#D9E6F0;
+  --radius:3px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:28px 28px;
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:15.5px;
+  line-height:1.55;
+}
+.mono{font-family:'IBM Plex Mono',monospace;}
+sup,sub{
+  font-size:.72em;
+}
+.formula-row sup,.formula-row sub,
+.notebook sup,.notebook sub{
+  font-size:.75em;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;color:var(--blue-deep);margin:0 0 .4em;}
+a{color:var(--blue);}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--blue-deep);color:#fff;padding:.6em 1em;z-index:200;}
+.skip-link:focus{left:8px;top:8px;}
+
+/* ===== Top masthead with live control-chart tracker ===== */
+.masthead{
+  background:var(--blue-deep);
+  color:#EAF1F7;
+  padding:20px clamp(16px,4vw,40px) 14px;
+  border-bottom:4px solid var(--amber);
+}
+.masthead-top{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:10px;
+  max-width:1180px;
+  margin:0 auto;
+}
+.masthead-top .eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--amber);
+}
+.masthead-top h1{
+  color:#fff;
+  font-size:clamp(24px,3.4vw,34px);
+  margin:2px 0 0;
+  letter-spacing:-.01em;
+}
+.masthead-top .tagline{
+  font-size:13.5px;
+  color:#B9CBDA;
+  max-width:46ch;
+}
+.student-bar{
+  max-width:1180px;margin:16px auto 0;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:#122C46;border:1px solid #26496A;border-radius:var(--radius);
+  padding:10px 14px;
+}
+.student-bar label{
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+  color:#9FB6C8;text-transform:uppercase;letter-spacing:.06em;
+}
+.student-bar input{
+  font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;
+  background:#0D2137;border:1px solid #2E5678;color:#EAF1F7;
+  padding:6px 10px;border-radius:var(--radius);
+  min-width:200px;flex:1 1 200px;max-width:320px;
+}
+.student-bar input::placeholder{color:#6E8AA1;}
+.student-bar input:focus{outline:2px solid var(--amber);outline-offset:1px;}
+.student-bar .save-note{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7FB88A;
+  display:none;
+}
+.student-bar .save-note.show{display:inline;}
+.student-bar .gradebook-status{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9FB6C8;
+  margin-left:auto;
+}
+.tracker-wrap{max-width:1180px;margin:14px auto 0;}
+.tracker-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;
+  color:#9FB6C8;margin-bottom:2px;text-transform:uppercase;
+}
+.tracker-svg{width:100%;height:92px;display:block;background:#122C46;border:1px solid #26496A;border-radius:var(--radius);}
+
+/* ===== Layout ===== */
+.layout{
+  max-width:1180px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:230px 1fr;
+  gap:0;
+  align-items:start;
+}
+nav.toc{
+  position:sticky;top:0;
+  padding:22px 14px 40px 4px;
+  max-height:100vh;
+  overflow-y:auto;
+}
+nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:ch;}
+nav.toc li{counter-increment:ch;margin-bottom:2px;}
+nav.toc a{
+  display:flex;gap:8px;align-items:baseline;
+  text-decoration:none;color:var(--ink-soft);
+  font-size:13.5px;padding:7px 8px;border-radius:var(--radius);
+  border-left:3px solid transparent;
+}
+nav.toc a::before{
+  content:"§" counter(ch);
+  font-family:'IBM Plex Mono',monospace;
+  color:var(--blue);font-size:11.5px;flex:0 0 auto;
+}
+nav.toc a:hover{background:var(--blue-light);color:var(--blue-deep);}
+nav.toc a.active{border-left-color:var(--amber);background:var(--blue-light);color:var(--blue-deep);font-weight:600;}
+nav.toc .score-dot{
+  margin-left:auto;width:8px;height:8px;border-radius:50%;
+  background:var(--line);flex:0 0 auto;
+}
+nav.toc .score-dot.pass{background:var(--green);}
+nav.toc .score-dot.fail{background:var(--orange);}
+
+main{padding:30px clamp(16px,3vw,40px) 80px;min-width:0;}
+section.chapter{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin-bottom:34px;
+  scroll-margin-top:14px;
+  overflow:hidden;
+}
+.chapter-head{
+  padding:20px 26px 16px;
+  border-bottom:1px solid var(--line);
+  display:flex;gap:16px;align-items:flex-start;
+}
+.chapter-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;color:var(--blue);
+  background:var(--blue-light);
+  border:1px solid var(--line);
+  padding:3px 8px;border-radius:var(--radius);
+  white-space:nowrap;margin-top:4px;
+}
+.chapter-head h2{font-size:22px;}
+.chapter-head p{margin:2px 0 0;color:var(--ink-soft);font-size:14px;}
+.chapter-body{padding:22px 26px 28px;}
+.chapter-body h3{font-size:15.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);margin-top:30px;}
+.chapter-body h3:first-child{margin-top:0;}
+
+/* Work order / scenario card */
+.workorder{
+  background:var(--amber-bg);
+  border:1px solid #E7C88A;
+  border-left:5px solid var(--amber);
+  border-radius:var(--radius);
+  padding:16px 18px;
+  margin-top:10px;
+}
+.workorder .wo-head{
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+  color:var(--amber);text-transform:uppercase;letter-spacing:.06em;
+  margin-bottom:8px;border-bottom:1px dashed #E7C88A;padding-bottom:8px;
+}
+.workorder p{margin:.4em 0;}
+.workorder ol{margin:.6em 0 0;padding-left:1.2em;}
+.workorder li{margin-bottom:4px;}
+.wo-given{
+  margin-top:12px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;line-height:1.65;
+  background:#FDF7EA;
+  border:1px dashed #E7C88A;
+  border-radius:var(--radius);
+  padding:9px 12px;
+  color:var(--ink);
+}
+.wo-given .wg-label{
+  display:block;text-transform:uppercase;letter-spacing:.08em;
+  font-size:10.5px;color:var(--amber);margin-bottom:5px;
+}
+.wo-given .wg-row{display:block;}
+
+/* Concept notes */
+.formula{
+  display:block;
+  font-family:'IBM Plex Mono',monospace;
+  background:var(--blue-light);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:10px 14px;margin:10px 0;
+  font-size:14px;overflow-x:auto;
+}
+.formula-block{
+  margin:12px 0;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--blue-light);
+  overflow:hidden;
+}
+.formula-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:4px 18px;
+  padding:10px 16px;
+  border-bottom:1px solid #C7D6E2;
+}
+.formula-row:last-child{border-bottom:none;}
+.formula-row .f-label{
+  flex:0 0 168px;
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:11.5px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--blue);
+  font-weight:600;
+}
+.formula-row .f-expr{
+  flex:1 1 260px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:14.5px;
+  color:var(--ink);
+}
+@media (max-width:520px){
+  .formula-row{flex-direction:column;gap:2px;}
+  .formula-row .f-label{flex-basis:auto;}
+}
+dl.defs{margin:10px 0;}
+dl.defs dt{font-weight:600;color:var(--blue-deep);margin-top:8px;}
+dl.defs dd{margin:2px 0 0;color:var(--ink-soft);}
+
+/* Worked example (bench notebook) */
+.notebook{
+  background:var(--mono-bg);
+  color:var(--mono-ink);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  margin-top:10px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13.5px;
+  line-height:1.7;
+}
+.notebook .nb-title{
+  color:var(--amber);text-transform:uppercase;font-size:11px;letter-spacing:.1em;
+  border-bottom:1px solid #26496A;padding-bottom:8px;margin-bottom:10px;
+}
+.notebook .step{margin:8px 0;}
+.notebook .step b{color:#8FC6E8;}
+.notebook .result{
+  margin-top:10px;padding-top:10px;border-top:1px solid #26496A;
+  color:#9CE0AE;
+}
+
+/* Exercises */
+.exercise{
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;margin-top:12px;background:#FAFCFD;
+}
+.exercise p.prompt{margin:0 0 8px;}
+.exercise .ex-num{
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--blue);
+  text-transform:uppercase;letter-spacing:.05em;
+}
+.reveal-btn{
+  background:var(--panel);border:1px solid var(--blue);color:var(--blue);
+  font-family:'IBM Plex Mono',monospace;font-size:12px;
+  padding:5px 10px;border-radius:var(--radius);cursor:pointer;
+  margin-top:4px;
+}
+.reveal-btn:hover{background:var(--blue);color:#fff;}
+.answer{
+  display:none;margin-top:10px;padding:10px 12px;
+  background:var(--green-bg);border-left:4px solid var(--green);
+  border-radius:var(--radius);font-size:14px;
+}
+.answer.shown{display:block;}
+
+/* Quiz */
+.quiz{
+  margin-top:14px;
+  border:1px solid var(--blue);border-radius:var(--radius);
+  overflow:hidden;
+}
+.quiz-head{
+  background:var(--blue-deep);color:#fff;padding:10px 16px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+}
+.quiz-head span{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:#B9CBDA;}
+.quiz-body{padding:16px 18px;background:#F7FAFC;}
+.q-item{margin-bottom:16px;}
+.q-item p.q-text{margin:0 0 8px;font-weight:600;}
+.q-item .opt{
+  display:flex;gap:8px;align-items:flex-start;
+  padding:6px 8px;border-radius:var(--radius);cursor:pointer;font-size:14px;
+}
+.q-item .opt:hover{background:var(--blue-light);}
+.q-item input{margin-top:3px;}
+.quiz-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px;}
+.check-btn{
+  background:var(--blue);color:#fff;border:none;
+  font-family:'IBM Plex Mono',monospace;font-size:13px;
+  padding:9px 18px;border-radius:var(--radius);cursor:pointer;
+}
+.check-btn:hover{background:var(--blue-deep);}
+.quiz-feedback{
+  font-family:'IBM Plex Mono',monospace;font-size:13.5px;padding:8px 12px;
+  border-radius:var(--radius);display:none;
+}
+.quiz-feedback.show{display:inline-block;}
+.quiz-feedback.pass{background:var(--green-bg);color:var(--green);border:1px solid #9DCBA6;}
+.quiz-feedback.fail{background:var(--orange-bg);color:var(--orange);border:1px solid #E3A88E;}
+.q-item.correct{background:var(--green-bg);}
+.q-item.incorrect{background:var(--orange-bg);}
+.q-item.correct,.q-item.incorrect{border-radius:var(--radius);padding-top:6px;}
+
+footer{
+  text-align:center;color:var(--ink-soft);font-size:12.5px;
+  padding:30px 20px 60px;font-family:'IBM Plex Mono',monospace;
+}
+
+@media (max-width:820px){
+  .layout{grid-template-columns:1fr;}
+  nav.toc{position:static;max-height:none;padding:16px 16px 0;}
+  nav.toc ol{display:flex;flex-wrap:wrap;gap:4px;}
+  nav.toc li{margin:0;}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+}
+.katex{font-size:1.06em;}
+.formula-row .katex{font-size:1.15em;}
+.notebook .katex,.notebook .katex *{color:inherit;}
+.workorder .katex{font-size:1.02em;}
+dl.defs .katex{font-size:1.0em;}
+.exercise .katex,.answer .katex{font-size:1.0em;}
+.q-item .katex{font-size:1.0em;}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <div>
+      <div class="eyebrow">Course Manual · Rev. 4</div>
+      <h1>Statistics for Engineers &amp; Technologists</h1>
+      <p class="tagline">Twelve chapters, each opened by a real work order from the plant floor — probability through reliability, study design, and A/B testing, worked the way you'll actually use them.</p>
+    </div>
+  </div>
+  <div class="tracker-wrap">
+    <div class="tracker-label">
+      <span>Course Process Chart — quiz score per chapter</span>
+      <span id="tracker-status">no chapters completed yet</span>
+    </div>
+    <svg class="tracker-svg" id="tracker-svg" viewBox="0 0 1000 92" preserveAspectRatio="none" role="img" aria-label="Control chart tracking quiz scores per chapter"></svg>
+  </div>
+  <div class="student-bar">
+    <label for="student-id-input">Student ID (last 4 digits)</label>
+    <input type="text" id="student-id-input" placeholder="e.g. 4821" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off">
+    <span class="save-note" id="student-id-saved">saved for this session ✓</span>
+    <span class="gradebook-status" id="gradebook-status"></span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="toc" aria-label="Chapter navigation">
+    <ol id="toc-list">
+      <li><a href="#ch1" data-ch="1">Probability<span class="score-dot" id="dot-1"></span></a></li>
+      <li><a href="#ch2" data-ch="2">Random Variables<span class="score-dot" id="dot-2"></span></a></li>
+      <li><a href="#ch3" data-ch="3">Distributions<span class="score-dot" id="dot-3"></span></a></li>
+      <li><a href="#ch4" data-ch="4">Data Visualization<span class="score-dot" id="dot-4"></span></a></li>
+      <li><a href="#ch5" data-ch="5">Statistical Inference<span class="score-dot" id="dot-5"></span></a></li>
+      <li><a href="#ch6" data-ch="6">One-Way ANOVA<span class="score-dot" id="dot-6"></span></a></li>
+      <li><a href="#ch7" data-ch="7">Regression<span class="score-dot" id="dot-7"></span></a></li>
+      <li><a href="#ch8" data-ch="8">Control Charts<span class="score-dot" id="dot-8"></span></a></li>
+      <li><a href="#ch9" data-ch="9">Reliability<span class="score-dot" id="dot-9"></span></a></li>
+      <li><a href="#ch10" data-ch="10">Study Designs<span class="score-dot" id="dot-10"></span></a></li>
+      <li><a href="#ch11" data-ch="11">Chi-Square Tests<span class="score-dot" id="dot-11"></span></a></li>
+      <li><a href="#ch12" data-ch="12">A/B Testing<span class="score-dot" id="dot-12"></span></a></li>
+    </ol>
+  </nav>
+
+  <main id="main-content">
+
+  <!-- ============ CHAPTER 1 : PROBABILITY ============ -->
+  <section class="chapter" id="ch1">
+    <div class="chapter-head">
+      <span class="chapter-num">§1</span>
+      <div>
+        <h2>Probability</h2>
+        <p>The math of "how sure are we" — sample spaces, independence, and Bayes' theorem.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4471</span><span>Line 4 · SMT Inspection</span></div>
+        <p><strong>Scenario.</strong> Your PCB assembly line historically ships boards with a <strong>3% true defect rate</strong>. An automated optical inspection (AOI) camera flags boards as "defective" — it correctly flags 98% of truly defective boards (its <em>sensitivity</em>), but it also false-flags 5% of good boards (its <em>false positive rate</em>).</p>
+        <p>Your shift supervisor pulls you aside with three questions before the line restarts:</p>
+        <ol>
+          <li>What fraction of <em>all</em> boards do we expect to get flagged, whether truly defective or not?</li>
+          <li>If a board gets flagged, what's the actual probability it's defective? (This decides whether flagged boards go to scrap or a second inspection.)</li>
+          <li>Two independent AOI stations both check high-risk boards — what's the chance <em>both</em> catch a real defect?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">P(Defective) = 0.03  →  P(Good) = 0.97</span>
+          <span class="wg-row">P(Flag | Defective) = 0.98  (sensitivity)</span>
+          <span class="wg-row">P(Flag | Good) = 0.05  (false positive rate)</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Sample space &amp; events</dt>
+        <dd>The sample space S is every possible outcome (e.g., {defective, not defective}). An event is a subset of S you care about, like "flagged."</dd>
+        <dt>Definition of probability</dt>
+        <dd>A number between 0 and 1 that measures how likely an event is: 0 means it never happens, 1 means it always happens. Formally, \(P(A)\) satisfies three axioms — \(P(A) \geq 0\) for every event, \(P(S) = 1\) for the full sample space, and probabilities of mutually exclusive events add together.</dd>
+        <dt>Addition rule</dt>
+        <dd>P(A ∪ B) = P(A) + P(B) − P(A ∩ B). For mutually exclusive events, P(A ∩ B) = 0.</dd>
+        <dt>Independence &amp; multiplication rule</dt>
+        <dd>A and B are independent if P(A ∩ B) = P(A)·P(B) — knowing one tells you nothing about the other.</dd>
+        <dt>Conditional probability</dt>
+        <dd>P(A | B) = P(A ∩ B) / P(B) — the probability of A, given that B already happened.</dd>
+        <dt>Law of total probability</dt>
+        <dd>If a set of events \(A_1, A_2, \ldots, A_n\) partitions the sample space (they're mutually exclusive and cover every outcome), the probability of any event B can be built up piece by piece from how likely B is under each \(A_i\), weighted by how likely each \(A_i\) is — exactly how Step 1 of the worked example finds the overall flag rate below.</dd>
+        <dt>Bayes' theorem</dt>
+        <dd>Flips a conditional around: it turns "P(test positive | actually defective)" — which the sensor spec gives you — into "P(actually defective | test positive)" — which is what you actually need to decide.</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Law of total probability</span><span class="f-expr">\(\displaystyle P(B) = \sum_{i=1}^{n} P(B \mid A_i)\cdot P(A_i)\)</span></div>
+        <div class="formula-row"><span class="f-label">Bayes' theorem</span><span class="f-expr">\(\displaystyle P(A \mid B) = \frac{P(B \mid A)\cdot P(A)}{P(B)}\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — resolving Work Order #4471</div>
+        <div class="step"><b>Using the known values from the work order:</b></div>
+        <div class="step"><b>Step 1 — total flag rate (law of total probability):</b></div>
+        <div class="step">\(P(\text{Flag}) = P(\text{Flag}\mid\text{Def})\cdot P(\text{Def}) + P(\text{Flag}\mid\text{Good})\cdot P(\text{Good})\)</div>
+        <div class="step">\(P(\text{Flag}) = (0.98)(0.03) + (0.05)(0.97) = 0.0294 + 0.0485 = 0.0779\)</div>
+        <div class="step"><b>Step 2 — Bayes' theorem for the real question:</b></div>
+        <div class="step">\(\displaystyle P(\text{Def}\mid\text{Flag}) = \frac{P(\text{Flag}\mid\text{Def})\cdot P(\text{Def})}{P(\text{Flag})} = \frac{0.0294}{0.0779} \approx 0.377\)</div>
+        <div class="step"><b>Step 3 — two independent stations, both catch a real defect:</b></div>
+        <div class="step">\(P(\text{both flag}\mid\text{Defective}) = 0.98 \times 0.98 = 0.9604\)</div>
+        <div class="result">Answers → ~7.8% of all boards get flagged; only ~37.7% of flagged boards are truly defective (so a second check before scrapping is worth it); two stations together catch ~96% of real defects.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 1.1</span>
+        <p class="prompt">Two independent crimping machines feed the same harness assembly. Machine A produces a bad crimp 2% of the time; Machine B, 1.5% of the time. A harness needs both a good crimp from A and from B to pass. What's the probability a harness fails at least one crimp?</p>
+        <button class="reveal-btn" data-target="a1-1">Reveal answer</button>
+        <div class="answer" id="a1-1">P(fail) = 1 − P(both good) = 1 − (0.98)(0.985) = 1 − 0.9653 = <strong>0.0347 (≈3.5%)</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 1.2</span>
+        <p class="prompt">A shipment is inspected for two independent defect types: dimensional (occurs 4% of the time) and surface finish (occurs 6% of the time). What's the probability a unit has <em>at least one</em> of the two defects?</p>
+        <button class="reveal-btn" data-target="a1-2">Reveal answer</button>
+        <div class="answer" id="a1-2">P(A∪B) = P(A)+P(B)−P(A)P(B) = 0.04 + 0.06 − (0.04)(0.06) = 0.10 − 0.0024 = <strong>0.0976 (≈9.8%)</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 1.3</span>
+        <p class="prompt">Of 400 inspected units logged by shift: Day shift produced 250 units with 10 defects; Night shift produced 150 units with 12 defects. A defective unit is picked at random from the log — what's the probability it came from Night shift?</p>
+        <button class="reveal-btn" data-target="a1-3">Reveal answer</button>
+        <div class="answer" id="a1-3">Total defects = 22. P(Night | Defective) = 12/22 ≈ <strong>0.545 (≈54.5%)</strong>, even though Night shift makes fewer units overall.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 1.4</span>
+        <p class="prompt">A gas leak sensor has a 99% true-positive rate and a 3% false-positive rate. Only 0.5% of readings correspond to an actual leak. If the sensor alarms, what's the probability there's a real leak?</p>
+        <button class="reveal-btn" data-target="a1-4">Reveal answer</button>
+        <div class="answer" id="a1-4">P(Alarm) = (0.99)(0.005) + (0.03)(0.995) = 0.00495 + 0.02985 = 0.0348. P(Leak|Alarm) = 0.00495/0.0348 ≈ <strong>0.142 (≈14.2%)</strong> — most alarms are false, which is why alarms usually trigger a manual check rather than an automatic shutdown.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 1.5</span>
+        <p class="prompt">A component is sourced from three suppliers, which partition every part received: Supplier X (50% of parts, 2% defect rate), Supplier Y (30% of parts, 4% defect rate), Supplier Z (20% of parts, 5% defect rate). Using the law of total probability, find the overall probability a randomly selected part is defective.</p>
+        <button class="reveal-btn" data-target="a1-5">Reveal answer</button>
+        <div class="answer" id="a1-5">\(P(D) = P(D\mid X)P(X) + P(D\mid Y)P(Y) + P(D\mid Z)P(Z)\) = (0.02)(0.50) + (0.04)(0.30) + (0.05)(0.20) = 0.010 + 0.012 + 0.010 = <strong>0.032 (≈3.2%)</strong>.</div>
+      </div>
+
+      <div class="quiz" id="quiz1" data-chapter="1">
+        <div class="quiz-head"><span>Quiz — §1 Probability</span><span>7 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="1">
+            <p class="q-text">1. Two events A and B are independent. This means:</p>
+            <label class="opt"><input type="radio" name="q1-1" value="0"> They can never occur together.</label>
+            <label class="opt"><input type="radio" name="q1-1" value="1"> Knowing B occurred doesn't change the probability of A.</label>
+            <label class="opt"><input type="radio" name="q1-1" value="2"> P(A) must equal P(B).</label>
+            <label class="opt"><input type="radio" name="q1-1" value="3"> A causes B.</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">2. If two defect types are mutually exclusive (a unit can only have one or the other), P(A ∪ B) equals:</p>
+            <label class="opt"><input type="radio" name="q1-2" value="0"> P(A) · P(B)</label>
+            <label class="opt"><input type="radio" name="q1-2" value="1"> P(A) − P(B)</label>
+            <label class="opt"><input type="radio" name="q1-2" value="2"> P(A) + P(B)</label>
+            <label class="opt"><input type="radio" name="q1-2" value="3"> P(A | B)</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">3. Bayes' theorem is most useful for engineers when:</p>
+            <label class="opt"><input type="radio" name="q1-3" value="0"> You know P(test result | true state) but need P(true state | test result).</label>
+            <label class="opt"><input type="radio" name="q1-3" value="1"> Two events never occur together.</label>
+            <label class="opt"><input type="radio" name="q1-3" value="2"> You need the mean of a data set.</label>
+            <label class="opt"><input type="radio" name="q1-3" value="3"> All outcomes are equally likely.</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">4. A sensor's false positive rate is 5%. This is:</p>
+            <label class="opt"><input type="radio" name="q1-4" value="0"> P(no defect | flagged)</label>
+            <label class="opt"><input type="radio" name="q1-4" value="1"> P(defect | flagged)</label>
+            <label class="opt"><input type="radio" name="q1-4" value="2"> P(flagged | defect)</label>
+            <label class="opt"><input type="radio" name="q1-4" value="3"> P(flagged | no defect)</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">5. In Work Order #4471, the reason only ~38% of flagged boards were truly defective — despite 98% sensitivity — is:</p>
+            <label class="opt"><input type="radio" name="q1-5" value="0"> The AOI camera is malfunctioning.</label>
+            <label class="opt"><input type="radio" name="q1-5" value="1"> True defects are rare (3%), so even a small false-positive rate produces many false alarms relative to true ones.</label>
+            <label class="opt"><input type="radio" name="q1-5" value="2"> Sensitivity and false positive rate must always sum to 1.</label>
+            <label class="opt"><input type="radio" name="q1-5" value="3"> The sample space was not exhaustive.</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">6. Which of these could NOT be a valid probability value?</p>
+            <label class="opt"><input type="radio" name="q1-6" value="0"> 0</label>
+            <label class="opt"><input type="radio" name="q1-6" value="1"> 1.2</label>
+            <label class="opt"><input type="radio" name="q1-6" value="2"> 0.5</label>
+            <label class="opt"><input type="radio" name="q1-6" value="3"> 1</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">7. The law of total probability lets you compute P(B) by:</p>
+            <label class="opt"><input type="radio" name="q1-7" value="0"> Ignoring how B relates to any other event</label>
+            <label class="opt"><input type="radio" name="q1-7" value="1"> Dividing P(B) by P(A)</label>
+            <label class="opt"><input type="radio" name="q1-7" value="2"> Summing \(P(B\mid A_i)\cdot P(A_i)\) across a partition \(A_1,\ldots,A_n\) of the sample space</label>
+            <label class="opt"><input type="radio" name="q1-7" value="3"> Assuming A and B are independent</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(1)">Check answers</button>
+            <span class="quiz-feedback" id="fb-1"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 2 : RANDOM VARIABLES ============ -->
+  <section class="chapter" id="ch2">
+    <div class="chapter-head">
+      <span class="chapter-num">§2</span>
+      <div>
+        <h2>Random Variables</h2>
+        <p>Turning uncertain outcomes into numbers you can average, weight, and design around.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4488</span><span>IoT Gateway · Packet Loss Log</span></div>
+        <p><strong>Scenario.</strong> A factory-floor IoT gateway logs the number of dropped packets per minute (a whole-number count) and, separately, the time until a backup capacitor fails on the gateway board (any positive real number of hours).</p>
+        <ol>
+          <li>Which of these two measurements is discrete, and which is continuous — and why does that distinction change how you'd model each one?</li>
+          <li>Given a week of dropped-packet counts, how do you summarize the "typical" number of drops per minute and how spread out that count tends to be?</li>
+          <li>If each dropped packet costs the plant $0.40 in re-transmission overhead, what's the expected daily cost?</li>
+          <li>Retry attempts are logged alongside dropped packets each minute (also 0/1). Do dropped packets and retries tend to move together, and how strongly?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values — one week of dropped-packet logs (PMF)</span>
+          <span class="wg-row">P(X=0) = 0.55  ·  P(X=1) = 0.25  ·  P(X=2) = 0.13  ·  P(X=3) = 0.07</span>
+          <span class="wg-row">Re-transmission cost = $0.40/packet  ·  1440 minutes/day</span>
+          <span class="wg-row">Joint PMF of X=drop indicator (0/1) and Y=retry indicator (0/1): P(0,0)=0.50, P(0,1)=0.05, P(1,0)=0.10, P(1,1)=0.35</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Discrete random variable</dt>
+        <dd>Takes countable values (0, 1, 2, …). Described by a probability mass function (PMF): P(X = x).</dd>
+        <dt>Continuous random variable</dt>
+        <dd>Takes any value in an interval (e.g., time, length, voltage). Described by a probability density function (PDF); probabilities come from areas under the curve, not point values.</dd>
+        <dt>Expected value</dt>
+        <dd>The long-run average value of X, weighted by probability.</dd>
+        <dt>Variance &amp; standard deviation</dt>
+        <dd>How far values typically spread from the expected value — critical for tolerance and risk decisions.</dd>
+        <dt>Covariance</dt>
+        <dd>Measures whether two random variables tend to move together (positive), move oppositely (negative), or show no linear relationship (near zero).</dd>
+        <dt>Correlation coefficient (ρ)</dt>
+        <dd>Covariance rescaled to always fall between −1 and +1, so its strength is comparable across variables measured in different units — the engineering-friendly version of "how related are these two things."</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Expected value</span><span class="f-expr">\(\displaystyle E[X] = \sum x \cdot P(X=x)\)</span></div>
+        <div class="formula-row"><span class="f-label">Variance</span><span class="f-expr">\(\displaystyle \mathrm{Var}(X) = E[X^2] - (E[X])^2\)</span></div>
+        <div class="formula-row"><span class="f-label">Linear transform</span><span class="f-expr">\(\displaystyle E[aX+b] = a\,E[X] + b\)</span></div>
+        <div class="formula-row"><span class="f-label">Covariance</span><span class="f-expr">\(\displaystyle \mathrm{Cov}(X,Y) = E[XY] - E[X]\,E[Y]\)</span></div>
+        <div class="formula-row"><span class="f-label">Correlation</span><span class="f-expr">\(\displaystyle \rho = \frac{\mathrm{Cov}(X,Y)}{\sigma_X \cdot \sigma_Y}\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — dropped packets per minute</div>
+        <div class="step"><b>Using the PMF from the work order:</b></div>
+        <div class="step"><b>Step 1 — expected value:</b></div>
+        <div class="step">\(E[X] = 0(.55)+1(.25)+2(.13)+3(.07) = 0.72\) packets/min</div>
+        <div class="step"><b>Step 2 — \(E[X^2]\):</b></div>
+        <div class="step">\(E[X^2] = 0(.55)+1(.25)+4(.13)+9(.07) = 1.40\)</div>
+        <div class="step"><b>Step 3 — variance &amp; SD:</b></div>
+        <div class="step">\(\mathrm{Var}(X) = 1.40 - 0.72^2 = 1.40 - 0.5184 = 0.8816 \Rightarrow SD \approx 0.939\)</div>
+        <div class="step"><b>Step 4 — expected daily cost (1440 min/day, $0.40/packet):</b></div>
+        <div class="step">\(E[\text{cost}] = 1440 \times 0.72 \times \$0.40 \approx \$414.72\)/day</div>
+        <div class="result">Answers → packet count is discrete (PMF), capacitor lifetime is continuous (PDF); expected drops ≈ 0.72/min with SD ≈ 0.94; expected daily re-transmission cost ≈ $415.</div>
+      </div>
+
+      <div class="notebook">
+        <div class="nb-title">Bench notes — correlation between drops and retries</div>
+        <div class="step"><b>Using the joint PMF from the work order (X=drop indicator, Y=retry indicator):</b></div>
+        <div class="step"><b>Step 1 — marginal means:</b></div>
+        <div class="step">\(E[X] = P(X=1) = 0.10+0.35 = 0.45, \quad E[Y] = P(Y=1) = 0.05+0.35 = 0.40\)</div>
+        <div class="step"><b>Step 2 — E[XY] (only the X=1,Y=1 cell contributes):</b></div>
+        <div class="step">\(E[XY] = (1)(1)(0.35) = 0.35\)</div>
+        <div class="step"><b>Step 3 — covariance:</b></div>
+        <div class="step">\(\mathrm{Cov}(X,Y) = 0.35 - (0.45)(0.40) = 0.35 - 0.18 = 0.17\)</div>
+        <div class="step"><b>Step 4 — standard deviations (0/1 variables, so \(E[X^2]=E[X]\), \(E[Y^2]=E[Y]\)):</b></div>
+        <div class="step">\(\mathrm{Var}(X) = 0.45-0.45^2 = 0.2475 \Rightarrow \sigma_X\approx0.4975, \quad \mathrm{Var}(Y) = 0.40-0.40^2 = 0.24 \Rightarrow \sigma_Y\approx0.4899\)</div>
+        <div class="step"><b>Step 5 — correlation:</b></div>
+        <div class="step">\(\displaystyle \rho = \frac{0.17}{0.4975\times0.4899} \approx 0.698\)</div>
+        <div class="result">Answer → ρ ≈ 0.70: drops and retries have a fairly strong positive correlation, meaning minutes with more dropped packets tend to also log more retry attempts — consistent with a shared root cause (e.g., a congested link) rather than two unrelated events.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 2.1</span>
+        <p class="prompt">A batch inspection finds X = number of defective units in a box of 4, with P(0)=0.41, P(1)=0.35, P(2)=0.18, P(3)=0.05, P(4)=0.01. Find E[X].</p>
+        <button class="reveal-btn" data-target="a2-1">Reveal answer</button>
+        <div class="answer" id="a2-1">E[X] = 0(.41)+1(.35)+2(.18)+3(.05)+4(.01) = 0+0.35+0.36+0.15+0.04 = <strong>0.90 defects/box</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 2.2</span>
+        <p class="prompt">Rework cost per defective unit is $12, plus a flat $50 inspection fee per box regardless of defects. Let Y = 12X + 50. If E[X] = 0.90, find E[Y].</p>
+        <button class="reveal-btn" data-target="a2-2">Reveal answer</button>
+        <div class="answer" id="a2-2">E[Y] = 12(0.90) + 50 = 10.80 + 50 = <strong>$60.80 per box</strong>, using linearity of expectation.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 2.3</span>
+        <p class="prompt">Classify each as discrete or continuous: (a) number of solder bridges on a board, (b) torque reading on a bolted joint, (c) number of trucks arriving at a loading dock per hour, (d) fill volume of a bottle in mL.</p>
+        <button class="reveal-btn" data-target="a2-3">Reveal answer</button>
+        <div class="answer" id="a2-3">(a) discrete, (b) continuous, (c) discrete, (d) continuous.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 2.4</span>
+        <p class="prompt">Using the PMF from Exercise 2.1, find Var(X). (E[\(X^{2}\)] = \(0^{2}\)(.41)+\(1^{2}\)(.35)+\(2^{2}\)(.18)+\(3^{2}\)(.05)+\(4^{2}\)(.01) = 0+0.35+0.72+0.45+0.16 = 1.68)</p>
+        <button class="reveal-btn" data-target="a2-4">Reveal answer</button>
+        <div class="answer" id="a2-4">Var(X) = \(1.68 - 0.90^2 = 1.68 - 0.81\) = <strong>0.87</strong>, so SD ≈ 0.933 defects/box.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 2.5</span>
+        <p class="prompt">Two sensors monitor the same equipment: X = temperature-alert indicator (1 if alert, 0 if not), Y = pressure-alert indicator (1/0), observed jointly over many monitoring windows: P(X=0,Y=0)=0.70, P(X=0,Y=1)=0.05, P(X=1,Y=0)=0.05, P(X=1,Y=1)=0.20. Find Cov(X,Y) and the correlation coefficient ρ.</p>
+        <button class="reveal-btn" data-target="a2-5">Reveal answer</button>
+        <div class="answer" id="a2-5">E[X]=P(X=1)=0.25, E[Y]=P(Y=1)=0.25, E[XY]=0.20. Cov = 0.20−(0.25)(0.25) = <strong>0.1375</strong>. Var(X)=Var(Y)=0.25−0.0625=0.1875, so \(\sigma_X=\sigma_Y\approx0.4330\). ρ = 0.1375/(0.4330×0.4330) ≈ <strong>0.733</strong> — a strong positive correlation, suggesting the two alerts often share a common root cause.</div>
+      </div>
+
+      <div class="quiz" id="quiz2" data-chapter="2">
+        <div class="quiz-head"><span>Quiz — §2 Random Variables</span><span>6 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="2">
+            <p class="q-text">1. Number of failed welds on a car frame is best modeled as:</p>
+            <label class="opt"><input type="radio" name="q2-1" value="0"> A continuous random variable</label>
+            <label class="opt"><input type="radio" name="q2-1" value="1"> A constant</label>
+            <label class="opt"><input type="radio" name="q2-1" value="2"> A discrete random variable</label>
+            <label class="opt"><input type="radio" name="q2-1" value="3"> Not a random variable</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">2. For a continuous random variable, P(X = exactly 5.000...) is:</p>
+            <label class="opt"><input type="radio" name="q2-2" value="0"> Always 1</label>
+            <label class="opt"><input type="radio" name="q2-2" value="1"> Essentially 0 — probability comes from areas over intervals</label>
+            <label class="opt"><input type="radio" name="q2-2" value="2"> Equal to the PDF value at 5</label>
+            <label class="opt"><input type="radio" name="q2-2" value="3"> Undefined</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">3. If E[X] = 2 defects/box, and rework costs $15 per defect with no flat fee, the expected rework cost per box is:</p>
+            <label class="opt"><input type="radio" name="q2-3" value="0"> $30</label>
+            <label class="opt"><input type="radio" name="q2-3" value="1"> $15</label>
+            <label class="opt"><input type="radio" name="q2-3" value="2"> $2</label>
+            <label class="opt"><input type="radio" name="q2-3" value="3"> Cannot be determined</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">4. Variance measures:</p>
+            <label class="opt"><input type="radio" name="q2-4" value="0"> The most likely single outcome</label>
+            <label class="opt"><input type="radio" name="q2-4" value="1"> The total number of outcomes</label>
+            <label class="opt"><input type="radio" name="q2-4" value="2"> The long-run average value</label>
+            <label class="opt"><input type="radio" name="q2-4" value="3"> How spread out the values are around the mean</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">5. A PMF table's probabilities must:</p>
+            <label class="opt"><input type="radio" name="q2-5" value="0"> All equal 1/n</label>
+            <label class="opt"><input type="radio" name="q2-5" value="1"> Sum to any positive number</label>
+            <label class="opt"><input type="radio" name="q2-5" value="2"> Sum to exactly 1, and each be between 0 and 1</label>
+            <label class="opt"><input type="radio" name="q2-5" value="3"> Be strictly decreasing</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">6. Two discrete random variables have Cov(X,Y) = 0. This tells you:</p>
+            <label class="opt"><input type="radio" name="q2-6" value="0"> X and Y must be independent</label>
+            <label class="opt"><input type="radio" name="q2-6" value="1"> There's no linear association between them (a nonlinear relationship could still exist)</label>
+            <label class="opt"><input type="radio" name="q2-6" value="2"> X always equals Y</label>
+            <label class="opt"><input type="radio" name="q2-6" value="3"> Both variables must have zero variance</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(2)">Check answers</button>
+            <span class="quiz-feedback" id="fb-2"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 3 : DISTRIBUTIONS ============ -->
+  <section class="chapter" id="ch3">
+    <div class="chapter-head">
+      <span class="chapter-num">§3</span>
+      <div>
+        <h2>Distributions</h2>
+        <p>Binomial, Poisson, Normal, Exponential — matching the model to the physical process.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4502</span><span>Plant-Wide Process Review</span></div>
+        <p><strong>Scenario.</strong> Four different teams bring four different problems to the same weekly meeting:</p>
+        <ol>
+          <li>Assembly: "Out of every 20 solder joints, how many will be bad if each has a 2% independent failure chance?"</li>
+          <li>IT: "Our server logs about 4 timeout events per hour on average — what's the chance we get more than 6 in a given hour?"</li>
+          <li>Component eng.: "Our 10 kΩ resistors are rated ±5%. What fraction actually fall outside spec given the manufacturing spread?"</li>
+          <li>Maintenance: "A pump fails on average every 500 hours. What's the chance it survives past 800 hours without failing?"</li>
+        </ol>
+        <p>Each question calls for a <em>different</em> distribution — matching the right model to the physical process is half the job.</p>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">Assembly: n = 20 joints, p = 0.02 failure probability each</span>
+          <span class="wg-row">IT: server timeouts average λ = 4 events/hour</span>
+          <span class="wg-row">Component eng.: resistors ~ Normal(μ = 10,000 Ω, σ = 250 Ω); spec limits 9,500–10,500 Ω</span>
+          <span class="wg-row">Maintenance: pump fails on average every 500 hours (λ = 1/500 per hour)</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Binomial(n, p)</dt>
+        <dd>Counts successes in n independent fixed trials, each with success probability p. Use for: fixed batch size, pass/fail per unit. Mean = np, Var = np(1−p).</dd>
+        <dt>Poisson(λ)</dt>
+        <dd>Counts events in a fixed window of time/space when events happen independently at a constant average rate λ. Use for: arrivals, timeouts, defects per unit area. Mean = Var = λ.</dd>
+        <dt>Normal(μ, σ)</dt>
+        <dd>Bell-shaped, symmetric — the default model for measurement error and manufacturing variation around a target. Convert to a z-score to use standard tables: z = (x − μ)/σ.</dd>
+        <dt>Exponential(λ)</dt>
+        <dd>Models time between independent events at a constant rate — classic "time to failure" model, memoryless (no wear-in accounted for).</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Binomial</span><span class="f-expr">\(\displaystyle P(X=k) = \binom{n}{k}p^k(1-p)^{n-k}\)</span></div>
+        <div class="formula-row"><span class="f-label">Poisson</span><span class="f-expr">\(\displaystyle P(X=k) = \frac{e^{-\lambda}\lambda^k}{k!}\)</span></div>
+        <div class="formula-row"><span class="f-label">Exponential</span><span class="f-expr">\(\displaystyle P(X>t) = e^{-\lambda t}\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — resistor tolerance (Normal)</div>
+        <div class="step"><b>Using the component eng. values from the work order:</b></div>
+        <div class="step"><b>Step 1 — standardize the lower limit:</b></div>
+        <div class="step">\(\displaystyle z = \frac{9500 - 10000}{250} = -2.00\)</div>
+        <div class="step"><b>Step 2 — standardize the upper limit:</b></div>
+        <div class="step">\(\displaystyle z = \frac{10500 - 10000}{250} = +2.00\)</div>
+        <div class="step"><b>Step 3 — look up standard normal table:</b></div>
+        <div class="step">\(P(Z < -2.00) \approx 0.0228, \quad P(Z > 2.00) \approx 0.0228\)</div>
+        <div class="step"><b>Step 4 — combine (out-of-spec on either side):</b></div>
+        <div class="step">\(P(\text{out of spec}) = 0.0228 + 0.0228 = 0.0456\)</div>
+        <div class="result">Answer → about 4.6% of resistors fall outside the ±5% tolerance band, even though the process is centered correctly — the spread (σ) itself is the problem, not the mean.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 3.1</span>
+        <p class="prompt">Assembly's question: 20 independent solder joints, each with 2% failure probability. What's the expected number of bad joints, and its standard deviation?</p>
+        <button class="reveal-btn" data-target="a3-1">Reveal answer</button>
+        <div class="answer" id="a3-1">Mean = np = 20(0.02) = <strong>0.4 bad joints</strong>. Var = np(1−p) = 20(0.02)(0.98) = 0.392, SD ≈ <strong>0.626</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 3.2</span>
+        <p class="prompt">IT's server logs λ = 4 timeouts/hour on average (Poisson). Find P(X = 0), the probability of a perfectly clean hour.</p>
+        <button class="reveal-btn" data-target="a3-2">Reveal answer</button>
+        <div class="answer" id="a3-2">\(P(X=0) = e^{-4}(4^0)/0! = e^{-4} \approx\) <strong>0.0183 (≈1.8%)</strong> — a clean hour is rare at this rate.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 3.3</span>
+        <p class="prompt">A shaft diameter is Normal with μ = 25.00 mm, σ = 0.08 mm. What z-score corresponds to a measured shaft of 25.20 mm, and is that unusual (|z| &gt; 2 is a common flag)?</p>
+        <button class="reveal-btn" data-target="a3-3">Reveal answer</button>
+        <div class="answer" id="a3-3">z = (25.20 − 25.00)/0.08 = <strong>2.5</strong> — yes, this is unusual (beyond the common ±2σ flag, well into the tail).</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 3.4</span>
+        <p class="prompt">Maintenance's pump fails on average every 500 hours (Exponential, λ = 1/500 per hour). Find P(survives past 800 hours) = P(X &gt; 800).</p>
+        <button class="reveal-btn" data-target="a3-4">Reveal answer</button>
+        <div class="answer" id="a3-4">\(P(X>800) = e^{-800/500} = e^{-1.6} \approx\) <strong>0.202 (≈20.2%)</strong> chance of surviving past 800 hours.</div>
+      </div>
+
+      <div class="quiz" id="quiz3" data-chapter="3">
+        <div class="quiz-head"><span>Quiz — §3 Distributions</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="1">
+            <p class="q-text">1. Counting defective units out of a fixed batch of 50, each independently defective with the same probability, calls for:</p>
+            <label class="opt"><input type="radio" name="q3-1" value="0"> Exponential</label>
+            <label class="opt"><input type="radio" name="q3-1" value="1"> Binomial</label>
+            <label class="opt"><input type="radio" name="q3-1" value="2"> Normal</label>
+            <label class="opt"><input type="radio" name="q3-1" value="3"> None of these</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">2. Counting the number of network packet arrivals in a fixed one-minute window, at a constant average rate, calls for:</p>
+            <label class="opt"><input type="radio" name="q3-2" value="0"> Binomial</label>
+            <label class="opt"><input type="radio" name="q3-2" value="1"> Exponential</label>
+            <label class="opt"><input type="radio" name="q3-2" value="2"> Poisson</label>
+            <label class="opt"><input type="radio" name="q3-2" value="3"> Normal</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">3. For a Poisson distribution with rate λ:</p>
+            <label class="opt"><input type="radio" name="q3-3" value="0"> The mean and variance are unrelated</label>
+            <label class="opt"><input type="radio" name="q3-3" value="1"> The variance is always 1</label>
+            <label class="opt"><input type="radio" name="q3-3" value="2"> The mean is always 0</label>
+            <label class="opt"><input type="radio" name="q3-3" value="3"> The mean equals the variance, both equal to λ</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">4. A z-score of −1.5 means a measurement is:</p>
+            <label class="opt"><input type="radio" name="q3-4" value="0"> 1.5 standard deviations below the mean</label>
+            <label class="opt"><input type="radio" name="q3-4" value="1"> 1.5 units below zero</label>
+            <label class="opt"><input type="radio" name="q3-4" value="2"> Impossible</label>
+            <label class="opt"><input type="radio" name="q3-4" value="3"> 1.5 standard deviations above the mean</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">5. The Exponential distribution is the natural model for:</p>
+            <label class="opt"><input type="radio" name="q3-5" value="0"> Number of defects on a fixed-size panel</label>
+            <label class="opt"><input type="radio" name="q3-5" value="1"> Time until the next failure, given a constant failure rate</label>
+            <label class="opt"><input type="radio" name="q3-5" value="2"> A symmetric bell-shaped measurement error</label>
+            <label class="opt"><input type="radio" name="q3-5" value="3"> Pass/fail counts in a fixed batch</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(3)">Check answers</button>
+            <span class="quiz-feedback" id="fb-3"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 4 : DATA VISUALIZATION ============ -->
+  <section class="chapter" id="ch4">
+    <div class="chapter-head">
+      <span class="chapter-num">§4</span>
+      <div>
+        <h2>Data Visualization</h2>
+        <p>Seeing the shape of your data before you trust any number that summarizes it.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4519</span><span>Motor Test Bench · Vibration Study</span></div>
+        <p><strong>Scenario.</strong> You've pulled 300 vibration-amplitude readings (mm/s) from a motor test bench, plus torque values from three different bolt suppliers, plus an hour of continuous temperature readings from a bearing housing.</p>
+        <ol>
+          <li>Before running any test, how do you check whether the vibration readings are roughly symmetric or skewed, and whether there are any obvious outliers?</li>
+          <li>How do you compare the torque distributions of three suppliers side-by-side in one view?</li>
+          <li>How do you check whether bearing temperature is drifting upward over the test hour, versus just noisy?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values — bolt torque by supplier (N·m), target 40 N·m</span>
+          <span class="wg-row">Supplier A: median 41, Q1 = 39, Q3 = 43, whiskers 35–47, no outliers</span>
+          <span class="wg-row">Supplier B: median 41, Q1 = 38, Q3 = 44, whiskers 32–50, one outlier at 58</span>
+          <span class="wg-row">Supplier C: median 36, Q1 = 34, Q3 = 38, whiskers 30–42, no outliers</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Histogram</dt>
+        <dd>Bins one numeric variable to reveal its shape — symmetric, skewed, bimodal — and roughly where the bulk of values sit.</dd>
+        <dt>Boxplot</dt>
+        <dd>Summarizes median, quartiles (Q1, Q3), and outliers in a compact strip — ideal for comparing several groups side by side.</dd>
+        <dt>Scatter plot</dt>
+        <dd>Shows the relationship between two numeric variables — direction, strength, linearity — and is the natural lead-in to regression (§7).</dd>
+        <dt>Run / time-series chart</dt>
+        <dd>Plots a measurement in the order it was collected, so you can catch trends, cycles, or shifts over time that a histogram would hide entirely.</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">IQR</span><span class="f-expr">\(\displaystyle IQR = Q_3 - Q_1\)</span></div>
+        <div class="formula-row"><span class="f-label">Outlier flag</span><span class="f-expr">\(\displaystyle x < Q_1 - 1.5\cdot IQR \ \text{ or } \ x > Q_3 + 1.5\cdot IQR\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — reading a boxplot of bolt torque by supplier</div>
+        <div class="step"><b>Using the supplier values from the work order:</b></div>
+        <div class="step"><b>Step 1 — compute IQR per supplier:</b></div>
+        <div class="step">\(A:\ IQR = 43-39 = 4 \quad B:\ IQR = 44-38 = 6 \quad C:\ IQR = 38-34 = 4\)</div>
+        <div class="step"><b>Step 2 — interpret:</b> A and B share the same center (median 41), but B is noticeably more spread out and has an outlier — a consistency problem, not an accuracy problem. C is tightly consistent but centered lower, off the 40 N·m target — an accuracy problem, not a consistency one.</div>
+        <div class="result">Takeaway → the boxplot separates "is it centered right" from "is it consistent," which a single average torque number would hide completely.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 4.1</span>
+        <p class="prompt">You want to see whether two process variables (feed rate and surface roughness) move together. Which plot do you reach for?</p>
+        <button class="reveal-btn" data-target="a4-1">Reveal answer</button>
+        <div class="answer" id="a4-1"><strong>Scatter plot</strong> — it directly shows the joint relationship between two numeric variables.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 4.2</span>
+        <p class="prompt">A histogram of cycle times has a long tail stretching to the right, with most values bunched on the left. Describe the shape and what it might mean physically.</p>
+        <button class="reveal-btn" data-target="a4-2">Reveal answer</button>
+        <div class="answer" id="a4-2">This is <strong>right-skewed (positively skewed)</strong> — most cycles run fast, but occasional cycles take much longer, e.g. from jams, rework loops, or material changeovers. The mean will sit above the median.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 4.3</span>
+        <p class="prompt">A data set has Q1 = 12, Q3 = 20. Is a reading of 33 flagged as an outlier by the 1.5×IQR rule?</p>
+        <button class="reveal-btn" data-target="a4-3">Reveal answer</button>
+        <div class="answer" id="a4-3">IQR = 8. Upper fence = 20 + 1.5(8) = 32. Since 33 &gt; 32, <strong>yes, it is flagged as an outlier</strong> (just barely).</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 4.4</span>
+        <p class="prompt">Bearing temperature readings look fine on a histogram (roughly bell-shaped, no extreme values) but the process still overheated by the end of the test. What visualization would have caught this, and why did the histogram miss it?</p>
+        <button class="reveal-btn" data-target="a4-4">Reveal answer</button>
+        <div class="answer" id="a4-4">A <strong>run/time-series chart</strong> would show the upward drift over time. A histogram discards the time order of the data — it can show a normal-looking spread even while the process is steadily trending toward failure.</div>
+      </div>
+
+      <div class="quiz" id="quiz4" data-chapter="4">
+        <div class="quiz-head"><span>Quiz — §4 Data Visualization</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="2">
+            <p class="q-text">1. To compare torque consistency across 3 suppliers in one glance, the best choice is:</p>
+            <label class="opt"><input type="radio" name="q4-1" value="0"> A single histogram of all data pooled together</label>
+            <label class="opt"><input type="radio" name="q4-1" value="1"> A scatter plot</label>
+            <label class="opt"><input type="radio" name="q4-1" value="2"> Side-by-side boxplots, one per supplier</label>
+            <label class="opt"><input type="radio" name="q4-1" value="3"> A pie chart</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">2. The IQR (interquartile range) is calculated as:</p>
+            <label class="opt"><input type="radio" name="q4-2" value="0"> Max − Min</label>
+            <label class="opt"><input type="radio" name="q4-2" value="1"> Q3 − Q1</label>
+            <label class="opt"><input type="radio" name="q4-2" value="2"> Mean − Median</label>
+            <label class="opt"><input type="radio" name="q4-2" value="3"> Q1 + Q3</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">3. A right-skewed distribution typically has:</p>
+            <label class="opt"><input type="radio" name="q4-3" value="0"> Mean well below the median</label>
+            <label class="opt"><input type="radio" name="q4-3" value="1"> No tail at all</label>
+            <label class="opt"><input type="radio" name="q4-3" value="2"> Mean exactly equal to the median</label>
+            <label class="opt"><input type="radio" name="q4-3" value="3"> Mean pulled above the median by a long right tail</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">4. To catch a slow upward drift in a measurement over the course of a test, you need a plot that preserves:</p>
+            <label class="opt"><input type="radio" name="q4-4" value="0"> The time order of the observations</label>
+            <label class="opt"><input type="radio" name="q4-4" value="1"> Only the quartiles</label>
+            <label class="opt"><input type="radio" name="q4-4" value="2"> Only the mean</label>
+            <label class="opt"><input type="radio" name="q4-4" value="3"> The bin width</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">5. On a boxplot, the line inside the box represents the:</p>
+            <label class="opt"><input type="radio" name="q4-5" value="0"> Mean</label>
+            <label class="opt"><input type="radio" name="q4-5" value="1"> Mode</label>
+            <label class="opt"><input type="radio" name="q4-5" value="2"> Median</label>
+            <label class="opt"><input type="radio" name="q4-5" value="3"> Standard deviation</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(4)">Check answers</button>
+            <span class="quiz-feedback" id="fb-4"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 5 : STATISTICAL INFERENCE ============ -->
+  <section class="chapter" id="ch5">
+    <div class="chapter-head">
+      <span class="chapter-num">§5</span>
+      <div>
+        <h2>Statistical Inference</h2>
+        <p>From a sample to a defensible claim — z-tests, t-tests, confidence intervals, and hypothesis tests.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4533</span><span>Process &amp; Materials Verification</span></div>
+        <p><strong>Scenario.</strong> Two verification tasks land on your desk the same day. <strong>Part A:</strong> a machine's historical defect rate is well-established at 4% from years of production data, and a filling line's fill volume has a long-run known process standard deviation — in both cases the "true" spread is already known, which calls for a z-test. <strong>Part B:</strong> a new aluminum alloy batch needs to qualify against a minimum mean tensile strength of 310 MPa, but this time you only have a small sample (n=25) and the population standard deviation isn't known — it has to be estimated from the sample itself, which calls for a t-test instead.</p>
+        <ol>
+          <li>(Z) Using a z-test, is this month's defective proportion still consistent with the historical 4% rate?</li>
+          <li>(Z) Using a z-test for the mean (σ known), is the average fill volume significantly different from the 500 mL target?</li>
+          <li>(T) What range of values is the true population mean tensile strength of the new alloy plausibly in, at 95% confidence?</li>
+          <li>(T) Is there statistically significant evidence the true mean tensile strength exceeds the 310 MPa minimum?</li>
+          <li>If you approve the alloy batch and you're wrong, what does that Type I error cost the business — and what does a Type II error cost instead?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">Z-test, proportion: historical \(p_{0}\) = 0.04, this month n = 100, defective x = 9 (p̂ = 0.09)</span>
+          <span class="wg-row">Z-test, mean: known process σ = 2.5 mL, n = 50, x̄ = 498.4 mL, target \(μ_{0}\) = 500 mL</span>
+          <span class="wg-row">T-test: n = 25 coupons, x̄ = 314.2 MPa, s = 9.8 MPa</span>
+          <span class="wg-row">\(H_0\): μ = 310  ·  \(H_1\): μ &gt; 310  ·  α = 0.05</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Point estimate &amp; sampling variability</dt>
+        <dd>x̄ estimates μ, but every new sample gives a slightly different x̄ — that's why we report a range, not just a single number.</dd>
+        <dt>When to use a z-test vs. a t-test</dt>
+        <dd>Use a z-test when the population standard deviation σ is genuinely known (e.g., from years of stable process-control data), or the sample is large enough that s is a reliable stand-in. Use a t-test for the more common case where σ is unknown and has to be estimated from a small sample — that uncertainty is exactly why the t-distribution has heavier tails than the normal.</dd>
+        <dt>One-sample z-test for a mean</dt>
+        <dd>Tests whether a sample mean is consistent with a target \(μ_{0}\), using the known σ.</dd>
+        <dt>One-sample z-test for a proportion</dt>
+        <dd>Tests whether an observed proportion p̂ is consistent with a hypothesized proportion \(p_{0}\).</dd>
+        <dt>Confidence interval (t-based)</dt>
+        <dd>A range built from the sample that's expected to capture the true population parameter a specified percentage of the time under repeated sampling — using \(t^*\) instead of \(z^*\) because σ is unknown.</dd>
+        <dt>Hypothesis test</dt>
+        <dd>\(H_0\) (null, "no effect / at the spec") vs. \(H_1\) (alternative, "there is an effect / above spec"). A small p-value means the observed data would be unlikely if \(H_0\) were true.</dd>
+        <dt>Type I / Type II error</dt>
+        <dd>Type I: rejecting \(H_0\) when it's actually true (false alarm). Type II: failing to reject \(H_0\) when it's actually false (missed detection). Engineering context decides which error is more costly.</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Z-test, mean</span><span class="f-expr">\(\displaystyle z = \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}\)</span></div>
+        <div class="formula-row"><span class="f-label">Z-test, proportion</span><span class="f-expr">\(\displaystyle z = \frac{\hat{p} - p_0}{\sqrt{p_0(1-p_0)/n}}\)</span></div>
+        <div class="formula-row"><span class="f-label">Two-sided critical value (z)</span><span class="f-expr">\(z^{*} \approx \pm 1.96\) at \(\alpha = 0.05\)</span></div>
+        <div class="formula-row"><span class="f-label">Confidence interval (t)</span><span class="f-expr">\(\displaystyle \bar{x} \pm t^{*}\cdot\frac{s}{\sqrt{n}}\)</span></div>
+        <div class="formula-row"><span class="f-label">Test statistic (t)</span><span class="f-expr">\(\displaystyle t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}}\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — Part A: z-test verification</div>
+        <div class="step"><b>Proportion z-test, using the known values from the work order:</b></div>
+        <div class="step">\(SE = \sqrt{0.04\times0.96/100} = \sqrt{0.000384} \approx 0.0196\)</div>
+        <div class="step">\(\displaystyle z = \frac{0.09 - 0.04}{0.0196} \approx 2.55\)</div>
+        <div class="step">\(|2.55| > 1.96 \Rightarrow\) reject \(H_0\) — defect rate has significantly increased from 4%</div>
+        <div class="step"><b>Mean z-test, using the known values:</b></div>
+        <div class="step">\(\displaystyle SE = \frac{2.5}{\sqrt{50}} \approx 0.3536\)</div>
+        <div class="step">\(\displaystyle z = \frac{498.4 - 500}{0.3536} \approx -4.53\)</div>
+        <div class="step">\(|-4.53| > 1.96 \Rightarrow\) reject \(H_0\) — fill volume is significantly below the 500 mL target</div>
+        <div class="result">Answers → both z-tests reject their null hypotheses: the defect rate has genuinely risen above the historical 4% baseline, and the fill line is running significantly under-target — both worth flagging for corrective action rather than dismissing as normal noise.</div>
+      </div>
+
+      <div class="notebook">
+        <div class="nb-title">Bench notes — Part B: t-test qualification of the alloy batch</div>
+        <div class="step"><b>Using the known values from the work order:</b></div>
+        <div class="step"><b>Step 1 — standard error:</b></div>
+        <div class="step">\(\displaystyle SE = \frac{s}{\sqrt{n}} = \frac{9.8}{\sqrt{25}} = \frac{9.8}{5} = 1.96\)</div>
+        <div class="step"><b>Step 2 — 95% CI (\(t^{*} \approx 2.064\) for df=24):</b></div>
+        <div class="step">\(314.2 \pm 2.064(1.96) = 314.2 \pm 4.05 \Rightarrow (310.15,\ 318.25)\) MPa</div>
+        <div class="step"><b>Step 3 — one-sided t-test statistic:</b></div>
+        <div class="step">\(\displaystyle t = \frac{314.2 - 310}{1.96} = \frac{4.2}{1.96} \approx 2.14\)</div>
+        <div class="step"><b>Step 4 — compare to critical value (\(t_{0.05,24} \approx 1.711\)):</b></div>
+        <div class="step">\(2.14 > 1.711 \Rightarrow\) reject \(H_0\)</div>
+        <div class="result">Answers → 95% CI is (310.15, 318.25) MPa, which is entirely above 310; t=2.14 exceeds the critical value, so there's significant evidence the true mean exceeds spec. A wrongful Type I approval risks a structural failure downstream; a Type II rejection just wastes a good batch — in structural work, Type I is almost always the costlier error, which argues for a conservative α.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 5.1</span>
+        <p class="prompt">A historical proportion is \(p_{0}\) = 0.05 with n = 200. Compute the standard error for the z-test.</p>
+        <button class="reveal-btn" data-target="a5-1">Reveal answer</button>
+        <div class="answer" id="a5-1">\(SE = \sqrt{0.05\times0.95/200} = \sqrt{0.0002375} \approx\) <strong>0.0154</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 5.2</span>
+        <p class="prompt">Using SE ≈ 0.0154 from Exercise 5.1, and this month's observed p̂ = 0.08, compute z and state the decision at α=0.05.</p>
+        <button class="reveal-btn" data-target="a5-2">Reveal answer</button>
+        <div class="answer" id="a5-2">z = (0.08 − 0.05)/0.0154 ≈ <strong>1.95</strong>. Since |1.95| is just barely under 1.96, <strong>fail to reject \(H_0\)</strong> — right on the edge of significance.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 5.3</span>
+        <p class="prompt">A process has known σ = 4.0 units and n = 64. Compute the standard error of the mean.</p>
+        <button class="reveal-btn" data-target="a5-3">Reveal answer</button>
+        <div class="answer" id="a5-3">\(\displaystyle SE = \frac{4.0}{\sqrt{64}} = \frac{4.0}{8} =\) <strong>0.5</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 5.4</span>
+        <p class="prompt">With SE = 0.5 from Exercise 5.3, target \(μ_{0}\) = 50, and observed x̄ = 51.2, compute z and decide at α=0.05.</p>
+        <button class="reveal-btn" data-target="a5-4">Reveal answer</button>
+        <div class="answer" id="a5-4">z = (51.2 − 50)/0.5 = <strong>2.4</strong>. Since |2.4| &gt; 1.96, <strong>reject \(H_0\)</strong> — the mean is significantly different from 50.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 5.5</span>
+        <p class="prompt">A sample of n=16 wire spools gives mean breaking strength x̄=142 N, s=8 N. Compute the standard error of the mean.</p>
+        <button class="reveal-btn" data-target="a5-5">Reveal answer</button>
+        <div class="answer" id="a5-5">\(\displaystyle SE = \frac{s}{\sqrt{n}} = \frac{8}{\sqrt{16}} = \frac{8}{4} =\) <strong>2.0 N</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 5.6</span>
+        <p class="prompt">Using x̄=142, SE=2.0, and t*≈2.131 (df=15) for a 95% CI, find the interval.</p>
+        <button class="reveal-btn" data-target="a5-6">Reveal answer</button>
+        <div class="answer" id="a5-6">142 ± 2.131(2.0) = 142 ± 4.26 → <strong>(137.74, 146.26) N</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 5.7</span>
+        <p class="prompt">A test yields p-value = 0.032 with α = 0.05. State the decision, in plain engineering language (not just "reject/fail to reject").</p>
+        <button class="reveal-btn" data-target="a5-7">Reveal answer</button>
+        <div class="answer" id="a5-7">Since 0.032 &lt; 0.05, <strong>reject \(H_0\)</strong> — the data provide statistically significant evidence against the null claim; the observed difference is unlikely to be due to sampling noise alone.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 5.8</span>
+        <p class="prompt">A pacemaker battery test has \(H_0\): "battery meets minimum life" vs. \(H_1\): "battery fails to meet minimum life." Which error type (I or II) is more dangerous here, and why?</p>
+        <button class="reveal-btn" data-target="a5-8">Reveal answer</button>
+        <div class="answer" id="a5-8">A <strong>Type II error</strong> (failing to detect a truly substandard battery, letting it pass as acceptable) is far more dangerous here — it risks patient harm. This argues for a test with high power even at the cost of a stricter (larger) α or larger sample size.</div>
+      </div>
+
+      <div class="quiz" id="quiz5" data-chapter="5">
+        <div class="quiz-head"><span>Quiz — §5 Statistical Inference</span><span>9 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="1">
+            <p class="q-text">1. A z-test is appropriate instead of a t-test when:</p>
+            <label class="opt"><input type="radio" name="q5-1" value="0"> The sample size is very small</label>
+            <label class="opt"><input type="radio" name="q5-1" value="1"> The population standard deviation is known (or n is large)</label>
+            <label class="opt"><input type="radio" name="q5-1" value="2"> The data is categorical</label>
+            <label class="opt"><input type="radio" name="q5-1" value="3"> There are three or more groups</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">2. The z-test statistic for a proportion is:</p>
+            <label class="opt"><input type="radio" name="q5-2" value="0"> (x̄ − \(μ_{0}\)) / s</label>
+            <label class="opt"><input type="radio" name="q5-2" value="1"> p̂ / n</label>
+            <label class="opt"><input type="radio" name="q5-2" value="2"> \((\hat{p} - p_0) / \sqrt{p_0(1-p_0)/n}\)</label>
+            <label class="opt"><input type="radio" name="q5-2" value="3"> \(p_{0}\) − p̂</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">3. For a two-sided z-test at α = 0.05, the critical value is approximately:</p>
+            <label class="opt"><input type="radio" name="q5-3" value="0"> ±1.00</label>
+            <label class="opt"><input type="radio" name="q5-3" value="1"> ±1.96</label>
+            <label class="opt"><input type="radio" name="q5-3" value="2"> ±3.00</label>
+            <label class="opt"><input type="radio" name="q5-3" value="3"> ±0.05</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">4. If the computed |z| exceeds the critical value, the decision is:</p>
+            <label class="opt"><input type="radio" name="q5-4" value="0"> Reject \(H_0\)</label>
+            <label class="opt"><input type="radio" name="q5-4" value="1"> Fail to reject \(H_0\)</label>
+            <label class="opt"><input type="radio" name="q5-4" value="2"> Increase α</label>
+            <label class="opt"><input type="radio" name="q5-4" value="3"> Collect a smaller sample</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">5. A 95% confidence interval means:</p>
+            <label class="opt"><input type="radio" name="q5-5" value="0"> 95% of individual data points fall in this range</label>
+            <label class="opt"><input type="radio" name="q5-5" value="1"> Under repeated sampling, about 95% of such intervals would capture the true parameter</label>
+            <label class="opt"><input type="radio" name="q5-5" value="2"> There's a 95% chance the sample mean is correct</label>
+            <label class="opt"><input type="radio" name="q5-5" value="3"> The true mean is 95% of the sample mean</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">6. A Type I error occurs when:</p>
+            <label class="opt"><input type="radio" name="q5-6" value="0"> You correctly fail to reject a true \(H_0\)</label>
+            <label class="opt"><input type="radio" name="q5-6" value="1"> You correctly reject a false \(H_0\)</label>
+            <label class="opt"><input type="radio" name="q5-6" value="2"> You fail to reject a false \(H_0\)</label>
+            <label class="opt"><input type="radio" name="q5-6" value="3"> You reject a true \(H_0\) (a false alarm)</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">7. A smaller p-value indicates:</p>
+            <label class="opt"><input type="radio" name="q5-7" value="0"> Stronger evidence against \(H_0\)</label>
+            <label class="opt"><input type="radio" name="q5-7" value="1"> Stronger evidence for \(H_0\)</label>
+            <label class="opt"><input type="radio" name="q5-7" value="2"> A larger sample size was used</label>
+            <label class="opt"><input type="radio" name="q5-7" value="3"> The confidence interval is wider</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">8. Increasing the sample size n, holding s constant, causes the standard error to:</p>
+            <label class="opt"><input type="radio" name="q5-8" value="0"> Increase</label>
+            <label class="opt"><input type="radio" name="q5-8" value="1"> Stay the same</label>
+            <label class="opt"><input type="radio" name="q5-8" value="2"> Decrease</label>
+            <label class="opt"><input type="radio" name="q5-8" value="3"> Become undefined</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">9. In the alloy qualification example, the 95% CI (310.15, 318.25) lying entirely above 310 MPa tells you:</p>
+            <label class="opt"><input type="radio" name="q5-9" value="0"> The batch definitely meets spec with certainty</label>
+            <label class="opt"><input type="radio" name="q5-9" value="1"> It's consistent with rejecting \(H_0\): μ=310 in favor of μ&gt;310</label>
+            <label class="opt"><input type="radio" name="q5-9" value="2"> The sample size was too small to matter</label>
+            <label class="opt"><input type="radio" name="q5-9" value="3"> The standard deviation must be zero</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(5)">Check answers</button>
+            <span class="quiz-feedback" id="fb-5"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 6 : ONE-WAY ANOVA ============ -->
+  <section class="chapter" id="ch6">
+    <div class="chapter-head">
+      <span class="chapter-num">§6</span>
+      <div>
+        <h2>One-Way ANOVA</h2>
+        <p>Comparing more than two group means at once, without stacking up t-test errors.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4547</span><span>Civil Lab · Concrete Curing Study</span></div>
+        <p><strong>Scenario.</strong> Three concrete curing methods are being compared for 28-day compressive strength (MPa): Method A (water curing), Method B (membrane curing), Method C (steam curing). Five test cylinders per method.</p>
+        <ol>
+          <li>Why not just run three separate two-sample t-tests (A vs B, A vs C, B vs C) instead of one combined test?</li>
+          <li>Is there a statistically significant difference among the three methods' mean strengths at all?</li>
+          <li>If ANOVA says "yes, there's a difference somewhere," how do you find out which method(s) actually differ?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">k = 3 groups, n = 5 cylinders each, N = 15 total</span>
+          <span class="wg-row">Group means: A = 34.2, B = 36.8, C = 39.1 MPa  ·  Grand mean = 36.7 MPa</span>
+          <span class="wg-row">From the raw cylinder data: SSB = 62.4, SSW = 48.0</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Why not multiple t-tests</dt>
+        <dd>Each t-test carries its own 5% false-alarm risk; running three of them compounds the overall chance of at least one false "significant" result well above 5%. ANOVA tests all groups in one shot, controlling that overall error rate.</dd>
+        <dt>Between-group vs. within-group variation</dt>
+        <dd>ANOVA compares how much group means differ from each other (between) against how much individual values vary within each group (within, i.e. noise).</dd>
+        <dt>F-statistic</dt>
+        <dd>F = (between-group variance) / (within-group variance). A large F means group differences are large relative to natural noise.</dd>
+        <dt>Post-hoc tests</dt>
+        <dd>A significant F only tells you a difference exists somewhere. Pairwise post-hoc comparisons (e.g., Tukey's HSD) pinpoint which specific groups differ.</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">F-statistic</span><span class="f-expr">\(\displaystyle F = \frac{MSB}{MSW} = \frac{SSB/(k-1)}{SSW/(N-k)}\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — curing method ANOVA (summary stats)</div>
+        <div class="step"><b>Using the known values from the work order:</b></div>
+        <div class="step"><b>Step 1 — degrees of freedom:</b></div>
+        <div class="step">\(df(\text{between}) = k-1 = 2, \quad df(\text{within}) = N-k = 12\)</div>
+        <div class="step"><b>Step 2 — mean squares:</b></div>
+        <div class="step">\(\displaystyle MSB = \frac{62.4}{2} = 31.2, \quad MSW = \frac{48.0}{12} = 4.0\)</div>
+        <div class="step"><b>Step 3 — F statistic:</b></div>
+        <div class="step">\(\displaystyle F = \frac{31.2}{4.0} = 7.80\)</div>
+        <div class="step"><b>Step 4 — compare to F-critical (\(F_{0.05,\,2,12} \approx 3.89\)):</b></div>
+        <div class="step">\(7.80 > 3.89 \Rightarrow\) reject \(H_0\) (equal means)</div>
+        <div class="result">Answers → single ANOVA avoids inflating false-alarm risk from 5% across three separate tests; F=7.80 exceeds critical value, so at least one curing method differs significantly; a Tukey post-hoc test would then be run to identify which pair(s) — likely steam (C) vs water (A), the two furthest apart.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 6.1</span>
+        <p class="prompt">With k=4 groups and N=40 total observations, what are df(between) and df(within)?</p>
+        <button class="reveal-btn" data-target="a6-1">Reveal answer</button>
+        <div class="answer" id="a6-1">df(between) = k−1 = <strong>3</strong>. df(within) = N−k = 40−4 = <strong>36</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 6.2</span>
+        <p class="prompt">Given SSB = 90 and SSW = 150, with the df from Exercise 6.1, compute F.</p>
+        <button class="reveal-btn" data-target="a6-2">Reveal answer</button>
+        <div class="answer" id="a6-2">MSB = 90/3 = 30. MSW = 150/36 ≈ 4.17. F = 30/4.17 ≈ <strong>7.20</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 6.3</span>
+        <p class="prompt">If F turns out smaller than F-critical, what's the correct conclusion — and is it fair to say "the groups are proven equal"?</p>
+        <button class="reveal-btn" data-target="a6-3">Reveal answer</button>
+        <div class="answer" id="a6-3"><strong>Fail to reject \(H_0\)</strong> — insufficient evidence of a difference among the means. This is not proof the means are equal, only that the data don't provide strong enough evidence to say they differ.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 6.4</span>
+        <p class="prompt">You're comparing only two suppliers, not three or more. Would you use ANOVA or a two-sample t-test, and why does it matter less here?</p>
+        <button class="reveal-btn" data-target="a6-4">Reveal answer</button>
+        <div class="answer" id="a6-4">Either works and gives an equivalent result for exactly two groups — but the <strong>two-sample t-test</strong> is the simpler, more direct tool. ANOVA's advantage (controlling error rate across many comparisons) only becomes necessary with three or more groups.</div>
+      </div>
+
+      <div class="quiz" id="quiz6" data-chapter="6">
+        <div class="quiz-head"><span>Quiz — §6 One-Way ANOVA</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="0">
+            <p class="q-text">1. One-way ANOVA is used to compare:</p>
+            <label class="opt"><input type="radio" name="q6-1" value="0"> The means of three or more groups simultaneously</label>
+            <label class="opt"><input type="radio" name="q6-1" value="1"> Two variances only</label>
+            <label class="opt"><input type="radio" name="q6-1" value="2"> Only paired data</label>
+            <label class="opt"><input type="radio" name="q6-1" value="3"> Correlation between two variables</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">2. A large F-statistic suggests:</p>
+            <label class="opt"><input type="radio" name="q6-2" value="0"> Within-group variation dominates between-group variation</label>
+            <label class="opt"><input type="radio" name="q6-2" value="1"> All group means are exactly equal</label>
+            <label class="opt"><input type="radio" name="q6-2" value="2"> The sample size was too small</label>
+            <label class="opt"><input type="radio" name="q6-2" value="3"> Between-group variation is large relative to within-group noise</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">3. Running three separate t-tests instead of one ANOVA on three groups mainly risks:</p>
+            <label class="opt"><input type="radio" name="q6-3" value="0"> Getting the wrong sample size</label>
+            <label class="opt"><input type="radio" name="q6-3" value="1"> Inflating the overall chance of at least one false-positive result</label>
+            <label class="opt"><input type="radio" name="q6-3" value="2"> Making the F-statistic negative</label>
+            <label class="opt"><input type="radio" name="q6-3" value="3"> Nothing — it's mathematically identical to ANOVA</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">4. If ANOVA rejects \(H_0\), the next natural step is:</p>
+            <label class="opt"><input type="radio" name="q6-4" value="0"> Conclude every group differs from every other group</label>
+            <label class="opt"><input type="radio" name="q6-4" value="1"> Stop — no further analysis is needed</label>
+            <label class="opt"><input type="radio" name="q6-4" value="2"> Run a post-hoc test to find which specific groups differ</label>
+            <label class="opt"><input type="radio" name="q6-4" value="3"> Recompute the grand mean</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">5. MSW (mean square within) primarily reflects:</p>
+            <label class="opt"><input type="radio" name="q6-5" value="0"> Natural, random variability inside each group</label>
+            <label class="opt"><input type="radio" name="q6-5" value="1"> Differences between group means</label>
+            <label class="opt"><input type="radio" name="q6-5" value="2"> The number of groups</label>
+            <label class="opt"><input type="radio" name="q6-5" value="3"> The grand mean</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(6)">Check answers</button>
+            <span class="quiz-feedback" id="fb-6"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 7 : REGRESSION ============ -->
+  <section class="chapter" id="ch7">
+    <div class="chapter-head">
+      <span class="chapter-num">§7</span>
+      <div>
+        <h2>Regression</h2>
+        <p>Fitting a line to predict one measurement from another — and knowing when to trust it.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4561</span><span>Facilities · CNC Energy Study</span></div>
+        <p><strong>Scenario.</strong> Facilities wants to predict a CNC machine's daily energy use (kWh) from its daily runtime (hours), to help plan the electrical load. Five days of paired data were logged: (2,18), (4,31), (5,38), (7,52), (9,63) as (hours, kWh).</p>
+        <ol>
+          <li>What's the best-fit straight-line relationship between runtime and energy use?</li>
+          <li>For every additional hour of runtime, how much extra energy should we expect?</li>
+          <li>How much of the variation in energy use does runtime actually explain — and is it safe to predict energy use for a 14-hour day using this line?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values — (runtime hours, energy kWh)</span>
+          <span class="wg-row">(2, 18)  ·  (4, 31)  ·  (5, 38)  ·  (7, 52)  ·  (9, 63)</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Simple linear regression</dt>
+        <dd>Fits a line \(\hat{y} = b_0 + b_1x\) that minimizes the sum of squared residuals (least squares) — the vertical gaps between observed and predicted y.</dd>
+        <dt>Slope (\(b_{1}\))</dt>
+        <dd>The predicted change in y for each one-unit increase in x. Its sign and size are usually the actual engineering answer you need.</dd>
+        <dt>\(R^{2}\) (coefficient of determination)</dt>
+        <dd>The proportion of variation in y explained by the linear relationship with x, from 0 (no fit) to 1 (perfect fit).</dd>
+        <dt>Residuals</dt>
+        <dd>Observed minus predicted (y − ŷ). Patterns in residual plots (curves, funnels) signal that a straight line is the wrong model.</dd>
+        <dt>Extrapolation caution</dt>
+        <dd>A fitted line is only trustworthy within the range of x-values actually observed — predicting far outside that range assumes the relationship stays linear, which is often false.</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Slope</span><span class="f-expr">\(\displaystyle b_1 = \frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}\)</span></div>
+        <div class="formula-row"><span class="f-label">Intercept</span><span class="f-expr">\(\displaystyle b_0 = \bar{y} - b_1\bar{x}\)</span></div>
+        <div class="formula-row"><span class="f-label">R²</span><span class="f-expr">\(\displaystyle R^2 = 1 - \frac{SS_{\text{residual}}}{SS_{\text{total}}}\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — CNC runtime vs. energy use</div>
+        <div class="step"><b>Using the paired data from the work order:</b></div>
+        <div class="step"><b>Step 1 — means:</b> \(\bar{x} = 5.4,\ \bar{y} = 40.4\)</div>
+        <div class="step"><b>Step 2 — slope numerator \(\sum(x_i-\bar{x})(y_i-\bar{y})\):</b></div>
+        <div class="step">\((-3.4)(-22.4)+(-1.4)(-9.4)+(-0.4)(-2.4)+(1.6)(11.6)+(3.6)(22.6)\)</div>
+        <div class="step">\(= 76.16 + 13.16 + 0.96 + 18.56 + 81.36 = 190.2\)</div>
+        <div class="step"><b>Step 3 — slope denominator \(\sum(x_i-\bar{x})^2\):</b></div>
+        <div class="step">\(11.56+1.96+0.16+2.56+12.96 = 29.2\)</div>
+        <div class="step"><b>Step 4 — slope and intercept:</b></div>
+        <div class="step">\(\displaystyle b_1 = \frac{190.2}{29.2} \approx 6.51, \quad b_0 = 40.4 - 6.51(5.4) \approx 5.25\)</div>
+        <div class="step"><b>Step 5 — fitted line and \(R^2\) (computed):</b></div>
+        <div class="step">\(\hat{y} = 5.25 + 6.51x, \quad R^2 \approx 0.996\)</div>
+        <div class="result">Answers → each extra hour of runtime costs ≈6.5 additional kWh; the line explains ~99.6% of the variation seen — a very strong fit within 2–9 hours; predicting a 14-hour day would be extrapolation (beyond the observed 2–9 hour range) and should be flagged as less reliable, even though the fit looks excellent inside that range.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 7.1</span>
+        <p class="prompt">Using ŷ = 5.25 + 6.51x from the worked example, predict energy use for a 6-hour day.</p>
+        <button class="reveal-btn" data-target="a7-1">Reveal answer</button>
+        <div class="answer" id="a7-1">ŷ = 5.25 + 6.51(6) = 5.25 + 39.06 = <strong>≈44.3 kWh</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 7.2</span>
+        <p class="prompt">On day 3 (5 hours), actual energy use was 38 kWh. Using ŷ = 5.25 + 6.51(5) = 37.8, find the residual and say what its sign means.</p>
+        <button class="reveal-btn" data-target="a7-2">Reveal answer</button>
+        <div class="answer" id="a7-2">Residual = y − ŷ = 38 − 37.8 = <strong>+0.2 kWh</strong>. Positive means the actual value was slightly above what the line predicted — the model under-predicted that day by a small amount.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 7.3</span>
+        <p class="prompt">A different regression has \(R^{2}\) = 0.42. In plain terms, what does that say about how well x predicts y?</p>
+        <button class="reveal-btn" data-target="a7-3">Reveal answer</button>
+        <div class="answer" id="a7-3">Only about <strong>42% of the variation</strong> in y is explained by its linear relationship with x — the other 58% is due to other factors or noise. This is a weak-to-moderate fit; other variables likely matter too.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 7.4</span>
+        <p class="prompt">A residual plot shows points curving up, then down, then up again as x increases (not scattered randomly). What does this suggest, and what should you do?</p>
+        <button class="reveal-btn" data-target="a7-4">Reveal answer</button>
+        <div class="answer" id="a7-4">A curved pattern in residuals means a <strong>straight line is the wrong model</strong> — the true relationship is likely nonlinear. Consider a polynomial or transformed model, or investigate what physical mechanism causes the curvature.</div>
+      </div>
+
+      <div class="quiz" id="quiz7" data-chapter="7">
+        <div class="quiz-head"><span>Quiz — §7 Regression</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="2">
+            <p class="q-text">1. The slope \(b_1\) in \(\hat{y} = b_0 + b_1x\) represents:</p>
+            <label class="opt"><input type="radio" name="q7-1" value="0"> The predicted y when x = 0</label>
+            <label class="opt"><input type="radio" name="q7-1" value="1"> The total variation explained</label>
+            <label class="opt"><input type="radio" name="q7-1" value="2"> The predicted change in y per one-unit increase in x</label>
+            <label class="opt"><input type="radio" name="q7-1" value="3"> The correlation coefficient</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">2. \(R^{2}\) = 0.85 means:</p>
+            <label class="opt"><input type="radio" name="q7-2" value="0"> The slope is 0.85</label>
+            <label class="opt"><input type="radio" name="q7-2" value="1"> 85% of the variation in y is explained by the linear relationship with x</label>
+            <label class="opt"><input type="radio" name="q7-2" value="2"> 85% of data points are outliers</label>
+            <label class="opt"><input type="radio" name="q7-2" value="3"> The intercept is 0.85</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">3. Least squares regression chooses the line that:</p>
+            <label class="opt"><input type="radio" name="q7-3" value="0"> Passes through the most points exactly</label>
+            <label class="opt"><input type="radio" name="q7-3" value="1"> Maximizes \(R^{2}\)  to exactly 1</label>
+            <label class="opt"><input type="radio" name="q7-3" value="2"> Has the steepest possible slope</label>
+            <label class="opt"><input type="radio" name="q7-3" value="3"> Minimizes the sum of squared residuals</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">4. Predicting y for an x-value far outside the range of the original data is risky because:</p>
+            <label class="opt"><input type="radio" name="q7-4" value="0"> The linear relationship may not hold outside the observed range</label>
+            <label class="opt"><input type="radio" name="q7-4" value="1"> \(R^{2}\) automatically becomes negative</label>
+            <label class="opt"><input type="radio" name="q7-4" value="2"> The slope changes sign automatically</label>
+            <label class="opt"><input type="radio" name="q7-4" value="3"> It is never actually a problem</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">5. A residual is defined as:</p>
+            <label class="opt"><input type="radio" name="q7-5" value="0"> ŷ − x̄</label>
+            <label class="opt"><input type="radio" name="q7-5" value="1"> Observed y minus predicted ŷ</label>
+            <label class="opt"><input type="radio" name="q7-5" value="2"> The slope divided by the intercept</label>
+            <label class="opt"><input type="radio" name="q7-5" value="3"> Predicted ŷ minus the mean of x</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(7)">Check answers</button>
+            <span class="quiz-feedback" id="fb-7"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 8 : QUALITY CONTROL CHARTS ============ -->
+  <section class="chapter" id="ch8">
+    <div class="chapter-head">
+      <span class="chapter-num">§8</span>
+      <div>
+        <h2>Quality Control Charts</h2>
+        <p>Watching a process live — telling ordinary noise apart from a real problem, in real time.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4578</span><span>Machine Shop · CNC Lathe Monitoring</span></div>
+        <p><strong>Scenario.</strong> A CNC lathe cuts a shaft with a target diameter of 25.00 mm. Every hour, you pull a subgroup of n = 5 shafts and measure their diameters. After 20 subgroups: grand mean of subgroup means X̿ = 25.01 mm, mean subgroup range R̄ = 0.18 mm.</p>
+        <ol>
+          <li>What control limits should trigger an operator to stop and investigate the process, versus limits so tight they'd cause constant false alarms from ordinary noise?</li>
+          <li>Subgroup 14 comes in with a mean of 25.24 mm — is that a real process problem, or expected variation?</li>
+          <li>What's the difference between a "common cause" of variation (the machine's normal chatter) and a "special cause" (something actually went wrong)?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">Subgroup size n = 5, 20 subgroups: X̿ = 25.01 mm, R̄ = 0.18 mm</span>
+          <span class="wg-row">Control-chart constants for n = 5: \(A_{2}\) = 0.577, \(D_{3}\) = 0, \(D_{4}\) = 2.114</span>
+          <span class="wg-row">Subgroup 14 mean = 25.24 mm</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>X̄ chart (X-bar chart)</dt>
+        <dd>Tracks the subgroup <em>means</em> over time — catches shifts in the process center.</dd>
+        <dt>R chart</dt>
+        <dd>Tracks the subgroup <em>ranges</em> over time — catches changes in process spread/consistency, and must be checked (and be in control) before the X̄ chart is trusted.</dd>
+        <dt>Center line, UCL, LCL</dt>
+        <dd>The center line is the process average; the upper/lower control limits are typically set at ±3 standard deviations of the subgroup statistic — the natural boundary of common-cause variation, not a customer spec limit.</dd>
+        <dt>Common cause vs. special cause</dt>
+        <dd>Common cause: inherent, expected noise (tool vibration, minor material variation) — the process is "in control." Special cause: an identifiable, fixable event (tool wear, a bad batch of stock, an operator change) that pushes a point outside the control limits or produces a non-random pattern.</dd>
+        <dt>Control limits vs. spec limits</dt>
+        <dd>Control limits come from the process itself and describe what it's actually doing; specification limits come from the customer/design and describe what's acceptable. A process can be perfectly "in control" and still be producing out-of-spec parts if it isn't capable enough — that's a separate question (process capability).</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">X̄ chart limits</span><span class="f-expr">\(\displaystyle UCL = \bar{\bar{X}} + A_2\bar{R}, \quad LCL = \bar{\bar{X}} - A_2\bar{R}\)</span></div>
+        <div class="formula-row"><span class="f-label">R chart limits</span><span class="f-expr">\(\displaystyle UCL = D_4\bar{R}, \quad LCL = D_3\bar{R}\)</span></div>
+        <div class="formula-row"><span class="f-label">Constants</span><span class="f-expr">\(A_2, D_3, D_4\) depend on subgroup size \(n\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — X̄ and R chart limits, n = 5</div>
+        <div class="step"><b>Using the known values from the work order:</b></div>
+        <div class="step"><b>Step 1 — X̄ chart control limits:</b></div>
+        <div class="step">\(UCL(\bar{X}) = 25.01 + 0.577(0.18) = 25.01 + 0.1039 \approx 25.114\) mm</div>
+        <div class="step">\(LCL(\bar{X}) = 25.01 - 0.1039 \approx 24.906\) mm</div>
+        <div class="step"><b>Step 2 — R chart control limits:</b></div>
+        <div class="step">\(UCL(R) = 2.114(0.18) \approx 0.381\) mm</div>
+        <div class="step">\(LCL(R) = 0(0.18) = 0\) mm</div>
+        <div class="step"><b>Step 3 — evaluate subgroup 14 (mean 25.24 mm):</b></div>
+        <div class="step">\(25.24 > UCL(\bar{X}) = 25.114 \Rightarrow\) point falls outside the control limit</div>
+        <div class="result">Answers → X̄ control limits are (24.906, 25.114) mm; subgroup 14's mean of 25.24 mm falls above UCL, signaling a likely <strong>special cause</strong> (investigate tool wear, offset drift, fixture slip) rather than ordinary noise; common-cause variation is the small, everyday scatter you'd see even on a healthy day, while a point beyond ±3σ (or a run of 7+ points trending one direction) flags something worth stopping the line for.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 8.1</span>
+        <p class="prompt">A process has X̿ = 100.0, R̄ = 4.0, subgroup size n = 4 (\(A_{2}\) = 0.729 for n=4). Compute the X̄ chart's UCL and LCL.</p>
+        <button class="reveal-btn" data-target="a8-1">Reveal answer</button>
+        <div class="answer" id="a8-1">UCL = 100.0 + 0.729(4.0) = <strong>102.916</strong>. LCL = 100.0 − 2.916 = <strong>97.084</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 8.2</span>
+        <p class="prompt">For n = 4, \(D_{3}\) = 0 and \(D_{4}\) = 2.282. With R̄ = 4.0, find the R chart's UCL and LCL.</p>
+        <button class="reveal-btn" data-target="a8-2">Reveal answer</button>
+        <div class="answer" id="a8-2">UCL(R) = 2.282(4.0) = <strong>9.128</strong>. LCL(R) = 0(4.0) = <strong>0</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 8.3</span>
+        <p class="prompt">A process is perfectly in control (all points inside its X̄ and R limits), but 8% of parts still fail the customer's spec. What does this tell you about control limits versus spec limits?</p>
+        <button class="reveal-btn" data-target="a8-3">Reveal answer</button>
+        <div class="answer" id="a8-3">The process is <strong>stable but not capable</strong> — being "in control" only means the process is predictable and free of special causes, not that it meets the customer's requirements. Reducing the failure rate here requires reducing common-cause variation or re-centering the process, not chasing "special causes" that aren't there.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 8.4</span>
+        <p class="prompt">All 20 subgroup means fall within the control limits, but the last 8 points steadily increase in a row, never falling back down. Is this process in control? Why or why not?</p>
+        <button class="reveal-btn" data-target="a8-4">Reveal answer</button>
+        <div class="answer" id="a8-4"><strong>No</strong> — even though no single point breaches a control limit, a long run of consecutive points trending in one direction (commonly flagged at 6–7+ points) is a classic non-random pattern indicating a special cause, such as gradual tool wear. Control charts flag pattern signals, not just limit breaches.</div>
+      </div>
+
+      <div class="quiz" id="quiz8" data-chapter="8">
+        <div class="quiz-head"><span>Quiz — §8 Control Charts</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="2">
+            <p class="q-text">1. The R chart should generally be checked for control:</p>
+            <label class="opt"><input type="radio" name="q8-1" value="0"> After the X̄ chart, never before</label>
+            <label class="opt"><input type="radio" name="q8-1" value="1"> Only if the X̄ chart looks bad</label>
+            <label class="opt"><input type="radio" name="q8-1" value="2"> Before trusting the X̄ chart, since spread affects the X̄ limits</label>
+            <label class="opt"><input type="radio" name="q8-1" value="3"> It is not related to the X̄ chart</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">2. Control limits (UCL/LCL) are typically set at:</p>
+            <label class="opt"><input type="radio" name="q8-2" value="0"> The customer's specification limits</label>
+            <label class="opt"><input type="radio" name="q8-2" value="1"> ±3 standard deviations of the subgroup statistic</label>
+            <label class="opt"><input type="radio" name="q8-2" value="2"> The minimum and maximum ever observed</label>
+            <label class="opt"><input type="radio" name="q8-2" value="3"> Exactly at the center line</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">3. A "special cause" of variation is best described as:</p>
+            <label class="opt"><input type="radio" name="q8-3" value="0"> Normal, expected noise inherent to the process</label>
+            <label class="opt"><input type="radio" name="q8-3" value="1"> A calculation error in the control limits</label>
+            <label class="opt"><input type="radio" name="q8-3" value="2"> The customer's spec limit</label>
+            <label class="opt"><input type="radio" name="q8-3" value="3"> An identifiable, assignable event pushing the process off its normal behavior</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">4. A process that is "in control" but not "capable" means:</p>
+            <label class="opt"><input type="radio" name="q8-4" value="0"> The process is stable/predictable but still produces out-of-spec output</label>
+            <label class="opt"><input type="radio" name="q8-4" value="1"> The process has no variation at all</label>
+            <label class="opt"><input type="radio" name="q8-4" value="2"> The control chart was drawn incorrectly</label>
+            <label class="opt"><input type="radio" name="q8-4" value="3"> Every part automatically meets spec</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">5. A long run of consecutive points all trending upward, even while inside the control limits, should be treated as:</p>
+            <label class="opt"><input type="radio" name="q8-5" value="0"> Irrelevant, since no limit was breached</label>
+            <label class="opt"><input type="radio" name="q8-5" value="1"> Proof the control limits are wrong</label>
+            <label class="opt"><input type="radio" name="q8-5" value="2"> A possible signal of a special cause worth investigating</label>
+            <label class="opt"><input type="radio" name="q8-5" value="3"> Evidence the process improved</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(8)">Check answers</button>
+            <span class="quiz-feedback" id="fb-8"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 9 : RELIABILITY ============ -->
+  <section class="chapter" id="ch9">
+    <div class="chapter-head">
+      <span class="chapter-num">§9</span>
+      <div>
+        <h2>Reliability</h2>
+        <p>How long systems survive — series vs. redundant designs, and the math of MTBF.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4592</span><span>Data Center · Power Subsystem Reliability</span></div>
+        <p><strong>Scenario.</strong> A server rack's control unit depends on four components that must <em>all</em> work — power regulator, controller chip, cooling fan, network module — wired in series. Separately, the rack's primary power supply has a constant failure rate and must run continuously between planned maintenance windows. Engineers are also weighing whether to add a redundant backup power supply in parallel.</p>
+        <ol>
+          <li>What's the reliability of the 4-component series control unit?</li>
+          <li>Using the exponential failure model, what's the probability the primary power supply survives to the next maintenance window, and what's its MTBF?</li>
+          <li>If a redundant backup supply is added in parallel, how much does system reliability improve?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">Series control unit: R(regulator)=0.995, R(controller)=0.998, R(fan)=0.99, R(network)=0.997</span>
+          <span class="wg-row">Primary power supply: constant failure rate λ = 0.0002/hour; mission time t = 4000 hours</span>
+          <span class="wg-row">Candidate redundant backup supply: R(4000 hrs) = 0.98</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Reliability function R(t)</dt>
+        <dd>The probability a component or system survives past time t without failure: R(t) = P(T &gt; t).</dd>
+        <dt>Hazard rate &amp; the bathtub curve</dt>
+        <dd>The instantaneous failure rate over time typically follows a "bathtub" shape: high and falling early (infant mortality / defects), low and roughly constant in the middle (useful life), then rising again (wear-out).</dd>
+        <dt>MTBF / MTTF</dt>
+        <dd>Mean time between/to failure — the average lifetime. For a constant-hazard (exponential) process, MTBF = 1/λ.</dd>
+        <dt>Series systems</dt>
+        <dd>Every component must work for the system to work — system reliability is the <em>product</em> of individual reliabilities, so it's always lower than the weakest link.</dd>
+        <dt>Parallel (redundant) systems</dt>
+        <dd>The system works as long as <em>at least one</em> component works — redundancy raises reliability, often dramatically, especially for individually weak components.</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Exponential reliability</span><span class="f-expr">\(\displaystyle R(t) = e^{-\lambda t}\)</span></div>
+        <div class="formula-row"><span class="f-label">MTBF</span><span class="f-expr">\(\displaystyle MTBF = \frac{1}{\lambda}\)</span></div>
+        <div class="formula-row"><span class="f-label">Series system</span><span class="f-expr">\(\displaystyle R = R_1\cdot R_2 \cdots R_n\)</span></div>
+        <div class="formula-row"><span class="f-label">Parallel system</span><span class="f-expr">\(\displaystyle R = 1-(1-R_1)(1-R_2)\cdots(1-R_n)\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — resolving Work Order #4592</div>
+        <div class="step"><b>Using the known values from the work order:</b></div>
+        <div class="step"><b>Step 1 — series reliability of the control unit:</b></div>
+        <div class="step">\(R = 0.995 \times 0.998 \times 0.99 \times 0.997 \approx 0.9803\)</div>
+        <div class="step"><b>Step 2 — exponential reliability of the primary power supply at t=4000h:</b></div>
+        <div class="step">\(R(4000) = e^{-0.0002 \times 4000} = e^{-0.8} \approx 0.4493\)</div>
+        <div class="step"><b>Step 3 — MTBF:</b></div>
+        <div class="step">\(\displaystyle MTBF = \frac{1}{\lambda} = \frac{1}{0.0002} = 5000\) hours</div>
+        <div class="step"><b>Step 4 — add the redundant backup supply in parallel:</b></div>
+        <div class="step">\(R_{\text{parallel}} = 1 - (1-0.4493)(1-0.98) = 1 - (0.5507)(0.02) \approx 0.9890\)</div>
+        <div class="result">Answers → the 4-component series unit is ≈98.0% reliable; the primary power supply alone has only ≈44.9% chance of reaching 4000 hours (MTBF = 5000 hours, so 4000 hours is a substantial fraction of its average life); adding the redundant backup lifts system reliability at 4000 hours to ≈98.9% — redundancy compensates heavily for a component whose reliability drops fast as mission time approaches its MTBF.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 9.1</span>
+        <p class="prompt">Three sensors are wired in series (all three must work), each with individual reliability 0.96. Find the system reliability.</p>
+        <button class="reveal-btn" data-target="a9-1">Reveal answer</button>
+        <div class="answer" id="a9-1">\(R = 0.96^3 = 0.96\times0.96\times0.96 \approx\) <strong>0.8847 (≈88.5%)</strong> — noticeably lower than any single sensor's 96%.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 9.2</span>
+        <p class="prompt">A pump has a constant failure rate λ = 0.001 per hour. Find its MTBF and its reliability at 200 hours.</p>
+        <button class="reveal-btn" data-target="a9-2">Reveal answer</button>
+        <div class="answer" id="a9-2">MTBF = 1/0.001 = <strong>1000 hours</strong>. \(R(200) = e^{-0.001\times200} = e^{-0.2} \approx\) <strong>0.8187 (≈81.9%)</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 9.3</span>
+        <p class="prompt">Two identical backup generators are wired in parallel (redundant), each with reliability 0.90 over the mission period. Find the system reliability.</p>
+        <button class="reveal-btn" data-target="a9-3">Reveal answer</button>
+        <div class="answer" id="a9-3">R = 1 − (1−0.90)(1−0.90) = 1 − (0.10)(0.10) = 1 − 0.01 = <strong>0.99 (99%)</strong> — redundancy turns two 90%-reliable generators into a 99%-reliable pair.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 9.4</span>
+        <p class="prompt">A system has a sensor (R=0.97) in series with a switching stage made of two redundant relays in parallel, each with R=0.85. Find the overall system reliability.</p>
+        <button class="reveal-btn" data-target="a9-4">Reveal answer</button>
+        <div class="answer" id="a9-4">Relay stage (parallel): 1 − (1−0.85)(1−0.85) = 1 − 0.0225 = 0.9775. Overall (series with sensor): 0.97 × 0.9775 ≈ <strong>0.9482 (≈94.8%)</strong>.</div>
+      </div>
+
+      <div class="quiz" id="quiz9" data-chapter="9">
+        <div class="quiz-head"><span>Quiz — §9 Reliability</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="1">
+            <p class="q-text">1. In a series system, the overall reliability is always:</p>
+            <label class="opt"><input type="radio" name="q9-1" value="0"> Higher than any single component's reliability</label>
+            <label class="opt"><input type="radio" name="q9-1" value="1"> Less than or equal to the reliability of the weakest component</label>
+            <label class="opt"><input type="radio" name="q9-1" value="2"> Independent of the individual components</label>
+            <label class="opt"><input type="radio" name="q9-1" value="3"> Always exactly 1</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">2. Adding a redundant (parallel) component to a system generally:</p>
+            <label class="opt"><input type="radio" name="q9-2" value="0"> Decreases system reliability</label>
+            <label class="opt"><input type="radio" name="q9-2" value="1"> Has no effect on reliability</label>
+            <label class="opt"><input type="radio" name="q9-2" value="2"> Increases system reliability</label>
+            <label class="opt"><input type="radio" name="q9-2" value="3"> Only matters for series systems</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">3. For a constant-hazard (exponential) failure process with rate λ, the MTBF equals:</p>
+            <label class="opt"><input type="radio" name="q9-3" value="0"> λ</label>
+            <label class="opt"><input type="radio" name="q9-3" value="1"> \(λ^{2}\)</label>
+            <label class="opt"><input type="radio" name="q9-3" value="2"> \(e^{−λ}\)</label>
+            <label class="opt"><input type="radio" name="q9-3" value="3"> 1/λ</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">4. The "useful life" phase of the bathtub curve is characterized by:</p>
+            <label class="opt"><input type="radio" name="q9-4" value="0"> A roughly constant hazard rate</label>
+            <label class="opt"><input type="radio" name="q9-4" value="1"> A rapidly increasing hazard rate</label>
+            <label class="opt"><input type="radio" name="q9-4" value="2"> A rapidly decreasing hazard rate</label>
+            <label class="opt"><input type="radio" name="q9-4" value="3"> Zero probability of failure</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">5. A series system has two components with \(R_{1}\)=0.9 and \(R_{2}\)=0.8. The system reliability is:</p>
+            <label class="opt"><input type="radio" name="q9-5" value="0"> 0.72</label>
+            <label class="opt"><input type="radio" name="q9-5" value="1"> 1.70</label>
+            <label class="opt"><input type="radio" name="q9-5" value="2"> 0.10</label>
+            <label class="opt"><input type="radio" name="q9-5" value="3"> 0.90</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(9)">Check answers</button>
+            <span class="quiz-feedback" id="fb-9"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 10 : STUDY DESIGNS ============ -->
+  <section class="chapter" id="ch10">
+    <div class="chapter-head">
+      <span class="chapter-num">§10</span>
+      <div>
+        <h2>Study Designs</h2>
+        <p>Observational vs. experimental — when your data can support a causal claim, and when it can't.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4605</span><span>Reliability Engineering · Lubricant Additive Study</span></div>
+        <p><strong>Scenario.</strong> Plant leadership wants to know whether a new lubricant additive reduces bearing wear. Two proposals are on the table. <strong>Proposal 1 (Observational):</strong> pull two years of maintenance logs — some operators already started using the additive on their own — and compare wear rates between additive-users and non-users. <strong>Proposal 2 (Experimental):</strong> randomly assign identical machines to receive either the additive or the standard lubricant, then measure wear after a controlled trial period.</p>
+        <ol>
+          <li>Which design lets you make a causal claim — "the additive reduces wear" — rather than just an association?</li>
+          <li>In the observational study, what's a plausible confounding variable that could make the additive look effective (or ineffective) even if it isn't?</li>
+          <li>Why does random assignment in the experimental design help rule out that confounder?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">Proposal 1 (observational): 2 years of maintenance logs; additive use was self-selected by operators, not assigned</span>
+          <span class="wg-row">Proposal 2 (experimental): n = 40 identical machines, randomly assigned 20/20 to additive vs. standard lubricant, 6-month controlled trial</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Observational study</dt>
+        <dd>The researcher measures variables as they naturally occur, without intervening. Can reveal an association, but not — by itself — causation.</dd>
+        <dt>Experimental study</dt>
+        <dd>The researcher actively manipulates a factor (the treatment) and, ideally, randomly assigns units to groups. This is what supports a causal conclusion.</dd>
+        <dt>Confounding variable</dt>
+        <dd>A lurking variable related to <em>both</em> the exposure/treatment and the outcome, capable of creating a misleading association even when no real cause-effect link exists.</dd>
+        <dt>Randomization</dt>
+        <dd>Random assignment to groups balances both known and unknown confounders across groups on average, so any leftover difference in outcomes is more credibly attributable to the treatment itself.</dd>
+        <dt>Association ≠ causation</dt>
+        <dd>A strong observed relationship between two variables never, by itself, proves one causes the other — it may be coincidence, reverse causation, or a shared confounder.</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Observational</span><span class="f-expr">shows association only — no causal claim</span></div>
+        <div class="formula-row"><span class="f-label">Randomized experiment</span><span class="f-expr">association + control of confounders → causal claim</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — resolving Work Order #4605</div>
+        <div class="step"><b>Using the two proposals from the work order:</b></div>
+        <div class="step"><b>Step 1 — classify Proposal 1:</b></div>
+        <div class="step">No manipulation, no random assignment — additive use was self-selected by operators → <b>observational study</b></div>
+        <div class="step"><b>Step 2 — identify a plausible confounder in Proposal 1:</b></div>
+        <div class="step">Operators who proactively adopt a new additive may also be more diligent overall (better cleaning, alignment checks, lubrication schedule) — that diligence, not the additive itself, could explain lower wear</div>
+        <div class="step"><b>Step 3 — classify Proposal 2:</b></div>
+        <div class="step">Active manipulation (assigns the treatment) plus random assignment of machines → <b>experimental (randomized) study</b></div>
+        <div class="step"><b>Step 4 — why randomization addresses the confounder:</b></div>
+        <div class="step">With random assignment, diligently-maintained and less-diligently-maintained machines end up split roughly evenly between the two groups — so "operator diligence" is balanced out and can no longer explain a difference in wear between groups</div>
+        <div class="result">Answers → only Proposal 2 supports a causal claim; Proposal 1 can only establish that additive use and lower wear are associated, since operator diligence (and other unmeasured factors) remain plausible confounders that random assignment specifically neutralizes.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 10.1</span>
+        <p class="prompt">A study finds that plants with newer CNC machines have lower defect rates. Is this observational or experimental? Name a plausible confounder for the claim "newer machines cause lower defects."</p>
+        <button class="reveal-btn" data-target="a10-1">Reveal answer</button>
+        <div class="answer" id="a10-1"><strong>Observational</strong> (no random assignment or manipulation of which plants got new machines). Plausible confounder: plants that invest in newer machines may also have better-trained staff, newer facilities, or more mature quality processes overall — any of which could independently lower defect rates.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 10.2</span>
+        <p class="prompt">A researcher randomly assigns half of 50 identical bolts to a new coating process and half to the standard process, then measures corrosion resistance under identical test conditions. What type of study is this, and what does the randomization control for?</p>
+        <button class="reveal-btn" data-target="a10-2">Reveal answer</button>
+        <div class="answer" id="a10-2"><strong>Experimental (randomized) study.</strong> Randomization controls for confounding — any pre-existing differences between individual bolts or manufacturing batches are balanced across the two groups on average, so the coating itself is the credible explanation for any difference observed.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 10.3</span>
+        <p class="prompt">"Employees who take the stairs instead of the elevator have lower cholesterol." Explain why this observation alone doesn't prove taking the stairs causes lower cholesterol.</p>
+        <button class="reveal-btn" data-target="a10-3">Reveal answer</button>
+        <div class="answer" id="a10-3">This is an <strong>observational association</strong>. A confounder — such as overall fitness level, age, or general health-consciousness — could independently drive both stair-taking and lower cholesterol, producing the association without stairs directly causing anything.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 10.4</span>
+        <p class="prompt">A quality team can't randomly assign which of three existing production lines gets a new sensor upgrade (cost and logistics prevent it), so they compare defect rates on the upgraded line versus the other two over the same month. What kind of design is this, and what's one limitation compared to a randomized experiment?</p>
+        <button class="reveal-btn" data-target="a10-4">Reveal answer</button>
+        <div class="answer" id="a10-4">This is an <strong>observational (quasi-experimental) comparison</strong> — the upgrade wasn't randomly assigned. Limitation: pre-existing differences between the lines (age, product mix, operator skill, historical maintenance) are potential confounders that could bias the comparison, so any difference in defect rates can't be attributed to the sensor upgrade with full confidence.</div>
+      </div>
+
+      <div class="quiz" id="quiz10" data-chapter="10">
+        <div class="quiz-head"><span>Quiz — §10 Study Designs</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="1">
+            <p class="q-text">1. The key feature that lets an experimental study support a causal claim is:</p>
+            <label class="opt"><input type="radio" name="q10-1" value="0"> A large sample size, regardless of assignment method</label>
+            <label class="opt"><input type="radio" name="q10-1" value="1"> Random assignment of units to treatment groups</label>
+            <label class="opt"><input type="radio" name="q10-1" value="2"> Collecting data over a longer time period</label>
+            <label class="opt"><input type="radio" name="q10-1" value="3"> Using a computer to record the data</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">2. A confounding variable is best defined as:</p>
+            <label class="opt"><input type="radio" name="q10-2" value="0"> Any variable that is hard to measure</label>
+            <label class="opt"><input type="radio" name="q10-2" value="1"> The main outcome variable of interest</label>
+            <label class="opt"><input type="radio" name="q10-2" value="2"> A variable related to both the treatment/exposure and the outcome, capable of creating a misleading association</label>
+            <label class="opt"><input type="radio" name="q10-2" value="3"> A variable that is always randomly assigned</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">3. "Ice cream sales and drowning deaths rise and fall together" is a classic example of:</p>
+            <label class="opt"><input type="radio" name="q10-3" value="0"> Ice cream directly causing drownings</label>
+            <label class="opt"><input type="radio" name="q10-3" value="1"> Confounding — a lurking variable (hot weather) driving both</label>
+            <label class="opt"><input type="radio" name="q10-3" value="2"> A randomized experiment</label>
+            <label class="opt"><input type="radio" name="q10-3" value="3"> A properly controlled causal study</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">4. On its own, an observational study can generally:</p>
+            <label class="opt"><input type="radio" name="q10-4" value="0"> Show an association but not, by itself, establish causation</label>
+            <label class="opt"><input type="radio" name="q10-4" value="1"> Prove causation as reliably as a randomized experiment</label>
+            <label class="opt"><input type="radio" name="q10-4" value="2"> Eliminate all confounding automatically</label>
+            <label class="opt"><input type="radio" name="q10-4" value="3"> Never be useful for engineering decisions</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">5. Randomization in an experiment primarily works by:</p>
+            <label class="opt"><input type="radio" name="q10-5" value="0"> Guaranteeing a statistically significant result</label>
+            <label class="opt"><input type="radio" name="q10-5" value="1"> Removing the need for a control group</label>
+            <label class="opt"><input type="radio" name="q10-5" value="2"> Making the sample size larger</label>
+            <label class="opt"><input type="radio" name="q10-5" value="3"> Balancing both known and unknown confounders across groups on average</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(10)">Check answers</button>
+            <span class="quiz-feedback" id="fb-10"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 11 : CHI-SQUARE TESTS ============ -->
+  <section class="chapter" id="ch11">
+    <div class="chapter-head">
+      <span class="chapter-num">§11</span>
+      <div>
+        <h2>Chi-Square Tests</h2>
+        <p>Testing categorical data — does the mix match expectations, and are two categories related?</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4618</span><span>Quality Lab · Defect Pattern Analysis</span></div>
+        <p><strong>Scenario.</strong> The quality team tracks defects by category (solder bridge, missed component, cold joint, misalignment) against a long-standing baseline mix. Separately, they suspect defect rates might differ between Day and Night shift and want to know if defect occurrence is actually related to shift, or just noise.</p>
+        <ol>
+          <li>Does this month's defect-category mix still match the historical baseline proportions, or has something shifted?</li>
+          <li>Is whether a board is defective independent of which shift produced it, or is there a real association?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">Baseline proportions: solder bridge 40%, missed component 25%, cold joint 20%, misalignment 15%</span>
+          <span class="wg-row">This month, n=200 total defects: solder bridge 92, missed component 40, cold joint 44, misalignment 24</span>
+          <span class="wg-row">Shift table: Day — 18 defective, 132 not, of 150 boards. Night — 30 defective, 120 not, of 150 boards</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>Chi-square goodness-of-fit test</dt>
+        <dd>Compares observed counts across categories to the counts expected under a hypothesized set of proportions — did the mix change?</dd>
+        <dt>Chi-square test of independence</dt>
+        <dd>Uses a contingency table of two categorical variables to test whether they're associated, or independent of each other.</dd>
+        <dt>Expected counts</dt>
+        <dd>Goodness-of-fit: expected = hypothesized proportion × n. Independence: expected = (row total × column total) / grand total.</dd>
+        <dt>Degrees of freedom</dt>
+        <dd>Goodness-of-fit: k−1 (k = number of categories). Independence: (rows−1)(columns−1).</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Chi-square statistic</span><span class="f-expr">\(\displaystyle \chi^2 = \sum \frac{(O-E)^2}{E}\)</span></div>
+        <div class="formula-row"><span class="f-label">df, goodness-of-fit</span><span class="f-expr">\(\displaystyle df = k-1\)</span></div>
+        <div class="formula-row"><span class="f-label">df, independence</span><span class="f-expr">\(\displaystyle df = (r-1)(c-1)\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — resolving Work Order #4618</div>
+        <div class="step"><b>Part A — goodness-of-fit (defect mix vs. baseline), using the known values:</b></div>
+        <div class="step">Expected counts (proportion × 200): 80, 50, 40, 30</div>
+        <div class="step">\(\displaystyle \chi^2 = \frac{(92-80)^2}{80} + \frac{(40-50)^2}{50} + \frac{(44-40)^2}{40} + \frac{(24-30)^2}{30}\)</div>
+        <div class="step">\(= 1.80 + 2.00 + 0.40 + 1.20 = 5.40\)</div>
+        <div class="step">\(df = 4-1 = 3, \ \chi^2_{0.05,3} \approx 7.815 \Rightarrow 5.40 < 7.815 \Rightarrow\) fail to reject \(H_0\)</div>
+        <div class="step"><b>Part B — independence (defect status vs. shift), using the known values:</b></div>
+        <div class="step">Expected: Day-Def=24, Day-NotDef=126, Night-Def=24, Night-NotDef=126</div>
+        <div class="step">\(\displaystyle \chi^2 = \frac{(18-24)^2}{24} + \frac{(132-126)^2}{126} + \frac{(30-24)^2}{24} + \frac{(120-126)^2}{126}\)</div>
+        <div class="step">\(= 1.50 + 0.286 + 1.50 + 0.286 \approx 3.57\)</div>
+        <div class="step">\(df = (2-1)(2-1) = 1, \ \chi^2_{0.05,1} \approx 3.841 \Rightarrow 3.57 < 3.841 \Rightarrow\) fail to reject \(H_0\)</div>
+        <div class="result">Answers → this month's defect mix is not significantly different from baseline (\(\chi^2=5.40 < 7.815\)); defect status and shift also show no statistically significant association at α=0.05, though at 3.57 vs. a 3.841 threshold it's close enough to keep watching in future months rather than dismiss outright.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 11.1</span>
+        <p class="prompt">A baseline says defect category X should make up 10% of all defects. This month there were n=150 total defects. What's the expected count for category X?</p>
+        <button class="reveal-btn" data-target="a11-1">Reveal answer</button>
+        <div class="answer" id="a11-1">Expected = 0.10 × 150 = <strong>15</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 11.2</span>
+        <p class="prompt">For one cell of a contingency table, O=25 and E=18. Find that cell's contribution to \(χ^{2}\).</p>
+        <button class="reveal-btn" data-target="a11-2">Reveal answer</button>
+        <div class="answer" id="a11-2">\(\displaystyle \frac{(25-18)^2}{18} = \frac{49}{18} \approx\) <strong>2.72</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 11.3</span>
+        <p class="prompt">A contingency table has 3 rows (three production lines) and 4 columns (four defect types). What are the degrees of freedom?</p>
+        <button class="reveal-btn" data-target="a11-3">Reveal answer</button>
+        <div class="answer" id="a11-3">df = (3−1)(4−1) = 2×3 = <strong>6</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 11.4</span>
+        <p class="prompt">A test of independence gives \(\chi^2 = 9.2\) with df = 4 (critical value \(\chi^2_{0.05,4} \approx 9.488\)). State the conclusion.</p>
+        <button class="reveal-btn" data-target="a11-4">Reveal answer</button>
+        <div class="answer" id="a11-4">Since 9.2 &lt; 9.488, <strong>fail to reject \(H_0\)</strong> — no statistically significant evidence of association at α=0.05 (though it's close, so worth monitoring with more data).</div>
+      </div>
+
+      <div class="quiz" id="quiz11" data-chapter="11">
+        <div class="quiz-head"><span>Quiz — §11 Chi-Square Tests</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="1">
+            <p class="q-text">1. A chi-square goodness-of-fit test compares:</p>
+            <label class="opt"><input type="radio" name="q11-1" value="0"> Two sample means</label>
+            <label class="opt"><input type="radio" name="q11-1" value="1"> Observed category counts to expected counts under a hypothesized distribution</label>
+            <label class="opt"><input type="radio" name="q11-1" value="2"> A slope to zero</label>
+            <label class="opt"><input type="radio" name="q11-1" value="3"> Two variances</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">2. A chi-square test of independence is applied to:</p>
+            <label class="opt"><input type="radio" name="q11-2" value="0"> A single continuous variable</label>
+            <label class="opt"><input type="radio" name="q11-2" value="1"> Paired before/after measurements</label>
+            <label class="opt"><input type="radio" name="q11-2" value="2"> A contingency table of two categorical variables</label>
+            <label class="opt"><input type="radio" name="q11-2" value="3"> A regression residual plot</label>
+          </div>
+          <div class="q-item" data-correct="0">
+            <p class="q-text">3. Degrees of freedom for a goodness-of-fit test with k categories:</p>
+            <label class="opt"><input type="radio" name="q11-3" value="0"> k − 1</label>
+            <label class="opt"><input type="radio" name="q11-3" value="1"> k</label>
+            <label class="opt"><input type="radio" name="q11-3" value="2"> k + 1</label>
+            <label class="opt"><input type="radio" name="q11-3" value="3"> 2k</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">4. Degrees of freedom for an r×c contingency table:</p>
+            <label class="opt"><input type="radio" name="q11-4" value="0"> r + c</label>
+            <label class="opt"><input type="radio" name="q11-4" value="1"> (r−1)(c−1)</label>
+            <label class="opt"><input type="radio" name="q11-4" value="2"> r×c</label>
+            <label class="opt"><input type="radio" name="q11-4" value="3"> r−c</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">5. Chi-square tests are designed for:</p>
+            <label class="opt"><input type="radio" name="q11-5" value="0"> Continuous measurement data only</label>
+            <label class="opt"><input type="radio" name="q11-5" value="1"> Time-series data</label>
+            <label class="opt"><input type="radio" name="q11-5" value="2"> Paired numeric samples</label>
+            <label class="opt"><input type="radio" name="q11-5" value="3"> Categorical / count data</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(11)">Check answers</button>
+            <span class="quiz-feedback" id="fb-11"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 12 : A/B TESTING ============ -->
+  <section class="chapter" id="ch12">
+    <div class="chapter-head">
+      <span class="chapter-num">§12</span>
+      <div>
+        <h2>A/B Testing</h2>
+        <p>Comparing two variants head-to-head — and telling a real lift apart from noise.</p>
+      </div>
+    </div>
+    <div class="chapter-body">
+      <div class="workorder">
+        <div class="wo-head"><span>Work Order #4646</span><span>Firmware Team · Update Success Rate A/B Test</span></div>
+        <p><strong>Scenario.</strong> The firmware team is rolling out a large sensor-network update and wants to know whether a new "chunked" update protocol improves success rate over the current "single-file" protocol. They run an A/B test: Group A (current protocol) and Group B (new chunked protocol), both deployed simultaneously to randomly selected nodes under identical network conditions.</p>
+        <ol>
+          <li>Is the difference in success rates between A and B statistically significant, or could it be due to chance?</li>
+          <li>What's the practical impact — how many more nodes would succeed at scale (say, 10,000 nodes) if B is rolled out?</li>
+          <li>What design choices here (randomization, running both variants at the same time, holding conditions constant) make this a valid comparison rather than just an observational one?</li>
+        </ol>
+        <div class="wo-given">
+          <span class="wg-label">Known values</span>
+          <span class="wg-row">Group A (control): \(n_{A}\) = 500 nodes, 430 successful updates (\(\hat{p}_A = 0.86\))</span>
+          <span class="wg-row">Group B (treatment): \(n_{B}\) = 500 nodes, 460 successful updates (\(\hat{p}_B = 0.92\))</span>
+        </div>
+      </div>
+
+      <h3>Core ideas</h3>
+      <dl class="defs">
+        <dt>A/B testing</dt>
+        <dd>A randomized controlled experiment (see §10) comparing two variants — control (A) and treatment (B) — on a single outcome metric, with units randomly assigned to one group or the other.</dd>
+        <dt>Two-sample z-test for proportions</dt>
+        <dd>Tests whether the two groups' observed success proportions differ by more than sampling noise would explain, using a pooled proportion under the assumption of no difference.</dd>
+        <dt>Statistical vs. practical significance</dt>
+        <dd>A statistically significant result just means the difference is unlikely to be chance — it doesn't guarantee the difference is big enough to be worth the engineering cost of rolling it out. Both need to be checked.</dd>
+        <dt>Why randomize and run concurrently</dt>
+        <dd>Random assignment plus running both variants at the same time under the same conditions rules out confounders like time-of-day network load or gradual infrastructure changes — the same logic from §10, applied to a live rollout.</dd>
+      </dl>
+      <div class="formula-block">
+        <div class="formula-row"><span class="f-label">Pooled proportion</span><span class="f-expr">\(\displaystyle \hat{p} = \frac{x_A + x_B}{n_A + n_B}\)</span></div>
+        <div class="formula-row"><span class="f-label">Standard error</span><span class="f-expr">\(\displaystyle SE = \sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_A} + \frac{1}{n_B}\right)}\)</span></div>
+        <div class="formula-row"><span class="f-label">Test statistic</span><span class="f-expr">\(\displaystyle z = \frac{\hat{p}_B - \hat{p}_A}{SE}\)</span></div>
+      </div>
+
+      <h3>Worked example</h3>
+      <div class="notebook">
+        <div class="nb-title">Bench notes — resolving Work Order #4646</div>
+        <div class="step"><b>Using the known values from the work order:</b></div>
+        <div class="step"><b>Step 1 — pooled proportion:</b></div>
+        <div class="step">\(\displaystyle \hat{p} = \frac{430+460}{500+500} = \frac{890}{1000} = 0.89\)</div>
+        <div class="step"><b>Step 2 — standard error:</b></div>
+        <div class="step">\(SE = \sqrt{0.89\times0.11\times(1/500+1/500)} = \sqrt{0.0979\times0.004} = \sqrt{0.0003916} \approx 0.0198\)</div>
+        <div class="step"><b>Step 3 — z statistic:</b></div>
+        <div class="step">\(\displaystyle z = \frac{0.92 - 0.86}{0.0198} \approx 3.03\)</div>
+        <div class="step"><b>Step 4 — decision:</b></div>
+        <div class="step">\(|3.03| > 1.96 \Rightarrow\) reject \(H_0\) — statistically significant improvement</div>
+        <div class="step"><b>Step 5 — practical impact at scale (10,000 nodes):</b></div>
+        <div class="step">\(\text{Lift} = 0.92 - 0.86 = 0.06 \Rightarrow 0.06 \times 10{,}000 = 600\) additional successful updates</div>
+        <div class="result">Answers → the improvement is statistically significant (z≈3.03); at scale it means roughly 600 fewer failed updates per 10,000 nodes — a practically meaningful reduction in manual-intervention cases; the result is trustworthy specifically because both protocols were randomly assigned and run at the same time under matched conditions, ruling out the kind of confounding discussed in §10.</div>
+      </div>
+
+      <h3>Exercises</h3>
+      <div class="exercise">
+        <span class="ex-num">Exercise 12.1</span>
+        <p class="prompt">Group A: 180/300 conversions. Group B: 210/300 conversions. Compute the pooled proportion.</p>
+        <button class="reveal-btn" data-target="a12-1">Reveal answer</button>
+        <div class="answer" id="a12-1">p̂ = (180+210)/(300+300) = 390/600 = <strong>0.65</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 12.2</span>
+        <p class="prompt">Using p̂ = 0.65 and \(n_{A}\) = \(n_{B}\) = 300 from Exercise 12.1, compute the standard error.</p>
+        <button class="reveal-btn" data-target="a12-2">Reveal answer</button>
+        <div class="answer" id="a12-2">\(SE = \sqrt{0.65\times0.35\times(1/300+1/300)} = \sqrt{0.2275\times0.006667} = \sqrt{0.0015167} \approx\) <strong>0.0389</strong>.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 12.3</span>
+        <p class="prompt">Using SE ≈ 0.0389, \(\hat{p}_A = 0.60\), \(\hat{p}_B = 0.70\), compute z and decide at α=0.05.</p>
+        <button class="reveal-btn" data-target="a12-3">Reveal answer</button>
+        <div class="answer" id="a12-3">z = (0.70 − 0.60)/0.0389 ≈ <strong>2.57</strong>. Since |2.57| &gt; 1.96, <strong>reject \(H_0\)</strong> — B significantly outperforms A.</div>
+      </div>
+      <div class="exercise">
+        <span class="ex-num">Exercise 12.4</span>
+        <p class="prompt">A firmware A/B test runs on 500,000 nodes per group and finds a statistically significant z = 2.1, but the actual lift is only 0.05 percentage points (0.0005). Is this result necessarily worth the engineering cost of rolling out variant B? Explain.</p>
+        <button class="reveal-btn" data-target="a12-4">Reveal answer</button>
+        <div class="answer" id="a12-4">Not necessarily — this is a case of <strong>statistical significance without practical significance</strong>. With an enormous sample size, even a tiny, operationally meaningless difference can reach statistical significance. The team should weigh the (very small) real-world benefit against the engineering and rollout cost before deciding.</div>
+      </div>
+
+      <div class="quiz" id="quiz12" data-chapter="12">
+        <div class="quiz-head"><span>Quiz — §12 A/B Testing</span><span>5 questions</span></div>
+        <div class="quiz-body">
+          <div class="q-item" data-correct="0">
+            <p class="q-text">1. In A/B testing, random assignment of units to A or B primarily serves to:</p>
+            <label class="opt"><input type="radio" name="q12-1" value="0"> Control for confounding variables between the two groups</label>
+            <label class="opt"><input type="radio" name="q12-1" value="1"> Guarantee variant B wins</label>
+            <label class="opt"><input type="radio" name="q12-1" value="2"> Reduce the sample size needed</label>
+            <label class="opt"><input type="radio" name="q12-1" value="3"> Eliminate the need for a metric</label>
+          </div>
+          <div class="q-item" data-correct="2">
+            <p class="q-text">2. The pooled proportion in a two-sample proportion test is used to:</p>
+            <label class="opt"><input type="radio" name="q12-2" value="0"> Replace the need for a control group</label>
+            <label class="opt"><input type="radio" name="q12-2" value="1"> Report the final decision</label>
+            <label class="opt"><input type="radio" name="q12-2" value="2"> Estimate the common proportion under \(H_0\) for computing the standard error</label>
+            <label class="opt"><input type="radio" name="q12-2" value="3"> Measure practical significance directly</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">3. A result can be statistically significant but practically insignificant when:</p>
+            <label class="opt"><input type="radio" name="q12-3" value="0"> The sample size is too small to compute a p-value</label>
+            <label class="opt"><input type="radio" name="q12-3" value="1"> The effect size is tiny even though a huge sample makes it detectable</label>
+            <label class="opt"><input type="radio" name="q12-3" value="2"> Randomization was skipped</label>
+            <label class="opt"><input type="radio" name="q12-3" value="3"> This can never actually happen</label>
+          </div>
+          <div class="q-item" data-correct="3">
+            <p class="q-text">4. Which is essential for a valid A/B test comparison?</p>
+            <label class="opt"><input type="radio" name="q12-4" value="0"> Running variant B first, then variant A afterward</label>
+            <label class="opt"><input type="radio" name="q12-4" value="1"> Letting users choose which variant they prefer</label>
+            <label class="opt"><input type="radio" name="q12-4" value="2"> Using the largest possible sample size only</label>
+            <label class="opt"><input type="radio" name="q12-4" value="3"> Running both variants concurrently, under matched conditions, with random assignment</label>
+          </div>
+          <div class="q-item" data-correct="1">
+            <p class="q-text">5. In Work Order #4646, z ≈ 3.03 against a critical value of ±1.96 leads to:</p>
+            <label class="opt"><input type="radio" name="q12-5" value="0"> Fail to reject \(H_0\) — no real difference between A and B</label>
+            <label class="opt"><input type="radio" name="q12-5" value="1"> Reject \(H_0\) — a statistically significant difference between A and B</label>
+            <label class="opt"><input type="radio" name="q12-5" value="2"> An inconclusive result requiring a larger sample</label>
+            <label class="opt"><input type="radio" name="q12-5" value="3"> Proof that B is practically better regardless of cost</label>
+          </div>
+          <div class="quiz-actions">
+            <button class="check-btn" onclick="gradeQuiz(12)">Check answers</button>
+            <span class="quiz-feedback" id="fb-12"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<footer>STATISTICS FOR ENGINEERS &amp; TECHNOLOGISTS · COURSE MANUAL REV. 4 · 12 CHAPTERS</footer>
+
+<script>
+const scores = {1:null,2:null,3:null,4:null,5:null,6:null,7:null,8:null,9:null,10:null,11:null,12:null};
+const TOTAL_CH = 12;
+
+// ============================================================
+// GRADEBOOK SETUP — paste your Google Apps Script Web App URL below.
+// See the setup instructions provided alongside this file.
+// Leave blank ("") to use the page with quizzes graded locally only
+// (no data sent anywhere).
+// ============================================================
+const SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxlMKokGWgfB9cMyAZgXL-_M-n78dIo8XlLoPYYlYU8vR57nTQ-RHgnDssGG8mdsR39/exec";
+
+// ---- Student ID, last 4 digits (in-memory only for this browser session; not saved to disk) ----
+let studentId = "";
+const idInput = document.getElementById('student-id-input');
+const idSavedNote = document.getElementById('student-id-saved');
+idInput.addEventListener('change', ()=>{
+  const val = idInput.value.trim();
+  const valid = /^[0-9]{4}$/.test(val);
+  studentId = valid ? val : "";
+  idSavedNote.classList.toggle('show', valid);
+});
+idInput.addEventListener('input', ()=>{
+  idSavedNote.classList.remove('show');
+});
+
+const gbStatus = document.getElementById('gradebook-status');
+gbStatus.textContent = SHEET_WEBHOOK_URL
+  ? 'Results are recorded to your class gradebook.'
+  : 'Gradebook not connected — results are shown on-screen only.';
+
+// ---- Submit a chapter's question-level results to the Google Sheet ----
+function submitToSheet(rows){
+  if(!SHEET_WEBHOOK_URL) return;
+  fetch(SHEET_WEBHOOK_URL, {
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(rows)
+  }).catch(()=>{ /* best-effort; ignore network errors so grading still works offline */ });
+}
+
+// ---- Reveal-answer buttons ----
+document.querySelectorAll('.reveal-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const target = document.getElementById(btn.dataset.target);
+    const showing = target.classList.toggle('shown');
+    btn.textContent = showing ? 'Hide answer' : 'Reveal answer';
+  });
+});
+
+// ---- Quiz grading ----
+function gradeQuiz(ch){
+  const quiz = document.getElementById('quiz'+ch);
+  const items = quiz.querySelectorAll('.q-item');
+  let correct = 0;
+  let allAnswered = true;
+  const rows = [];
+  items.forEach(item=>{
+    const name = item.querySelector('input').name;
+    const chosen = quiz.querySelector('input[name="'+name+'"]:checked');
+    item.classList.remove('correct','incorrect');
+    if(!chosen){ allAnswered = false; return; }
+    const correctVal = item.dataset.correct;
+    const isCorrect = chosen.value === correctVal;
+    if(isCorrect){
+      item.classList.add('correct');
+      correct++;
+    } else {
+      item.classList.add('incorrect');
+    }
+    const qNum = name.split('-')[1];
+    const selectedLabel = chosen.closest('label');
+    const selectedText = selectedLabel ? selectedLabel.textContent.trim() : chosen.value;
+    const correctInput = quiz.querySelector('input[name="'+name+'"][value="'+correctVal+'"]');
+    const correctLabel = correctInput ? correctInput.closest('label') : null;
+    const correctText = correctLabel ? correctLabel.textContent.trim() : correctVal;
+    rows.push({
+      studentIdLast4Digits: studentId || '(no ID entered)',
+      chapter: ch,
+      question: qNum,
+      selectedAnswer: selectedText,
+      correctAnswer: correctText,
+      isCorrect: isCorrect
+    });
+  });
+  const fb = document.getElementById('fb-'+ch);
+  fb.classList.add('show');
+  if(!allAnswered){
+    fb.textContent = 'Answer all '+items.length+' questions before checking.';
+    fb.classList.remove('pass','fail');
+    return;
+  }
+  const pct = Math.round((correct/items.length)*100);
+  scores[ch] = pct;
+  let feedbackText = correct+' / '+items.length+' correct ('+pct+'%)';
+  if(SHEET_WEBHOOK_URL && !studentId){
+    feedbackText += ' — enter your Student ID above so this gets recorded!';
+  }
+  fb.textContent = feedbackText;
+  fb.classList.toggle('pass', pct>=70);
+  fb.classList.toggle('fail', pct<70);
+
+  const dot = document.getElementById('dot-'+ch);
+  dot.classList.toggle('pass', pct>=70);
+  dot.classList.toggle('fail', pct<70);
+
+  drawTracker();
+  submitToSheet(rows);
+}
+
+// ---- Sidebar active-chapter highlight on scroll ----
+const sections = document.querySelectorAll('section.chapter');
+const links = document.querySelectorAll('nav.toc a');
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const id = entry.target.id;
+      links.forEach(l=>l.classList.toggle('active', l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-15% 0px -70% 0px'});
+sections.forEach(s=>observer.observe(s));
+
+// ---- Live "control chart" progress tracker (signature element) ----
+function drawTracker(){
+  const svg = document.getElementById('tracker-svg');
+  const W = 1000, H = 92;
+  const marginL = 34, marginR = 16, marginT = 12, marginB = 18;
+  const plotW = W - marginL - marginR;
+  const plotH = H - marginT - marginB;
+  const CL = 70;   // passing threshold, center line
+  const UCL = 100;
+  const LCL = 0;
+  const yFor = v => marginT + plotH - (v/100)*plotH;
+
+  const attempted = Object.keys(scores).filter(k=>scores[k]!==null).map(Number);
+  let svgParts = '';
+
+  // grid + limit lines
+  svgParts += `<line x1="${marginL}" y1="${yFor(UCL)}" x2="${W-marginR}" y2="${yFor(UCL)}" stroke="#3E6F94" stroke-width="1" stroke-dasharray="4 3"/>`;
+  svgParts += `<line x1="${marginL}" y1="${yFor(CL)}" x2="${W-marginR}" y2="${yFor(CL)}" stroke="#5C86A6" stroke-width="1"/>`;
+  svgParts += `<text x="${marginL-6}" y="${yFor(UCL)+3}" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#7FA6C4">100</text>`;
+  svgParts += `<text x="${marginL-6}" y="${yFor(CL)+3}" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#7FA6C4">70</text>`;
+  svgParts += `<text x="${marginL-6}" y="${yFor(LCL)+3}" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#7FA6C4">0</text>`;
+
+  // x positions for each of the 8 chapters, evenly spaced
+  const xFor = ch => marginL + ((ch-1)/(TOTAL_CH-1))*plotW;
+
+  // connecting line between attempted points, in chapter order
+  if(attempted.length>1){
+    const sorted = attempted.slice().sort((a,b)=>a-b);
+    let pathD = '';
+    sorted.forEach((ch,i)=>{
+      const x = xFor(ch), y = yFor(scores[ch]);
+      pathD += (i===0?'M':'L')+x+' '+y+' ';
+    });
+    svgParts += `<path d="${pathD}" fill="none" stroke="#8FC6E8" stroke-width="1.5"/>`;
+  }
+
+  // baseline axis ticks for all 8 chapter slots (faint)
+  for(let ch=1; ch<=TOTAL_CH; ch++){
+    const x = xFor(ch);
+    svgParts += `<line x1="${x}" y1="${marginT}" x2="${x}" y2="${H-marginB}" stroke="#1C3A56" stroke-width="1"/>`;
+  }
+
+  // points
+  attempted.forEach(ch=>{
+    const x = xFor(ch), y = yFor(scores[ch]);
+    const pass = scores[ch] >= 70;
+    const color = pass ? '#6FCF87' : '#E8926A';
+    svgParts += `<circle cx="${x}" cy="${y}" r="5" fill="${color}" stroke="#0F2033" stroke-width="1.5"/>`;
+    svgParts += `<text x="${x}" y="${y-9}" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="${color}">§${ch}</text>`;
+  });
+
+  svg.innerHTML = svgParts;
+
+  const status = document.getElementById('tracker-status');
+  if(attempted.length===0){
+    status.textContent = 'no chapters completed yet';
+  } else {
+    const passCount = attempted.filter(ch=>scores[ch]>=70).length;
+    status.textContent = attempted.length+' of '+TOTAL_CH+' chapters attempted · '+passCount+' passed (≥70%)';
+  }
+}
+drawTracker();
+
+// ---- Render LaTeX math via KaTeX ----
+if(window.renderMathInElement){
+  renderMathInElement(document.body, {
+    delimiters:[
+      {left:"\\[", right:"\\]", display:true},
+      {left:"\\(", right:"\\)", display:false}
+    ],
+    throwOnError:false
+  });
+}
+</script>
+</body>
+</html>
