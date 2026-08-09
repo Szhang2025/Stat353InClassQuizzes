@@ -354,6 +354,15 @@ dl.defs dd{margin:2px 0 0;color:var(--ink-soft);}
 .quiz-feedback.show{display:inline-block;}
 .quiz-feedback.pass{background:var(--green-bg);color:var(--green);border:1px solid #9DCBA6;}
 .quiz-feedback.fail{background:var(--orange-bg);color:var(--orange);border:1px solid #E3A88E;}
+.quiz-feedback.warn{background:var(--amber-bg);color:var(--amber);border:1px solid #E7C88A;}
+@keyframes id-input-attn{
+  0%,100%{outline-color:var(--amber);}
+  50%{outline-color:var(--orange);}
+}
+.student-bar input.needs-attention{
+  outline:2px solid var(--amber);outline-offset:1px;
+  animation:id-input-attn 0.6s ease-in-out 3;
+}
 .q-item.correct{background:var(--green-bg);}
 .q-item.incorrect{background:var(--orange-bg);}
 .q-item.correct,.q-item.incorrect{border-radius:var(--radius);padding-top:6px;}
@@ -2198,6 +2207,23 @@ document.querySelectorAll('.reveal-btn').forEach(btn=>{
 // ---- Quiz grading ----
 function gradeQuiz(ch){
   const quiz = document.getElementById('quiz'+ch);
+  const fb = document.getElementById('fb-'+ch);
+
+  // Require a valid Student ID before grading, so results are never lost unattributed.
+  if(SHEET_WEBHOOK_URL && !studentId){
+    fb.classList.add('show');
+    fb.classList.remove('pass','fail');
+    fb.classList.add('warn');
+    fb.textContent = 'Enter your Student ID (last 4 digits) above before checking your answers.';
+    idInput.classList.remove('needs-attention');
+    void idInput.offsetWidth; // restart animation if triggered again
+    idInput.classList.add('needs-attention');
+    idInput.focus();
+    idInput.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  fb.classList.remove('warn');
+
   const items = quiz.querySelectorAll('.q-item');
   let correct = 0;
   let allAnswered = true;
@@ -2230,7 +2256,6 @@ function gradeQuiz(ch){
       isCorrect: isCorrect
     });
   });
-  const fb = document.getElementById('fb-'+ch);
   fb.classList.add('show');
   if(!allAnswered){
     fb.textContent = 'Answer all '+items.length+' questions before checking.';
@@ -2239,14 +2264,9 @@ function gradeQuiz(ch){
   }
   const pct = Math.round((correct/items.length)*100);
   scores[ch] = pct;
-  let feedbackText = correct+' / '+items.length+' correct ('+pct+'%)';
-  if(SHEET_WEBHOOK_URL && !studentId){
-    feedbackText += ' — enter your Student ID above so this gets recorded!';
-  }
-  fb.textContent = feedbackText;
+  fb.textContent = correct+' / '+items.length+' correct ('+pct+'%)';
   fb.classList.toggle('pass', pct>=70);
   fb.classList.toggle('fail', pct<70);
-
   const dot = document.getElementById('dot-'+ch);
   dot.classList.toggle('pass', pct>=70);
   dot.classList.toggle('fail', pct<70);
