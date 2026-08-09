@@ -403,7 +403,7 @@ dl.defs .katex{font-size:1.0em;}
   </div>
   <div class="tracker-wrap">
     <div class="tracker-label">
-      <span>Course Process Chart — quiz score per chapter</span>
+      <span>Course Process Chart — quiz submission progress</span>
       <span id="tracker-status">no chapters completed yet</span>
     </div>
     <svg class="tracker-svg" id="tracker-svg" viewBox="0 0 1000 92" preserveAspectRatio="none" role="img" aria-label="Control chart tracking quiz scores per chapter"></svg>
@@ -534,49 +534,49 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz1" data-chapter="1">
         <div class="quiz-head"><span>Quiz — §1 Probability</span><span>7 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">1. Two events A and B are independent. This means:</p>
             <label class="opt"><input type="radio" name="q1-1" value="0"> They can never occur together.</label>
             <label class="opt"><input type="radio" name="q1-1" value="1"> Knowing B occurred doesn't change the probability of A.</label>
             <label class="opt"><input type="radio" name="q1-1" value="2"> P(A) must equal P(B).</label>
             <label class="opt"><input type="radio" name="q1-1" value="3"> A causes B.</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">2. If two defect types are mutually exclusive (a unit can only have one or the other), P(A ∪ B) equals:</p>
             <label class="opt"><input type="radio" name="q1-2" value="0"> P(A) · P(B)</label>
             <label class="opt"><input type="radio" name="q1-2" value="1"> P(A) − P(B)</label>
             <label class="opt"><input type="radio" name="q1-2" value="2"> P(A) + P(B)</label>
             <label class="opt"><input type="radio" name="q1-2" value="3"> P(A | B)</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">3. Bayes' theorem is most useful for engineers when:</p>
             <label class="opt"><input type="radio" name="q1-3" value="0"> You know P(test result | true state) but need P(true state | test result).</label>
             <label class="opt"><input type="radio" name="q1-3" value="1"> Two events never occur together.</label>
             <label class="opt"><input type="radio" name="q1-3" value="2"> You need the mean of a data set.</label>
             <label class="opt"><input type="radio" name="q1-3" value="3"> All outcomes are equally likely.</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">4. A sensor's false positive rate is 5%. This is:</p>
             <label class="opt"><input type="radio" name="q1-4" value="0"> P(no defect | flagged)</label>
             <label class="opt"><input type="radio" name="q1-4" value="1"> P(defect | flagged)</label>
             <label class="opt"><input type="radio" name="q1-4" value="2"> P(flagged | defect)</label>
             <label class="opt"><input type="radio" name="q1-4" value="3"> P(flagged | no defect)</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">5. In Work Order #4471, the reason only ~38% of flagged boards were truly defective — despite 98% sensitivity — is:</p>
             <label class="opt"><input type="radio" name="q1-5" value="0"> The AOI camera is malfunctioning.</label>
             <label class="opt"><input type="radio" name="q1-5" value="1"> True defects are rare (3%), so even a small false-positive rate produces many false alarms relative to true ones.</label>
             <label class="opt"><input type="radio" name="q1-5" value="2"> Sensitivity and false positive rate must always sum to 1.</label>
             <label class="opt"><input type="radio" name="q1-5" value="3"> The sample space was not exhaustive.</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">6. Which of these could NOT be a valid probability value?</p>
             <label class="opt"><input type="radio" name="q1-6" value="0"> 0</label>
             <label class="opt"><input type="radio" name="q1-6" value="1"> 1.2</label>
             <label class="opt"><input type="radio" name="q1-6" value="2"> 0.5</label>
             <label class="opt"><input type="radio" name="q1-6" value="3"> 1</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">7. The law of total probability lets you compute P(B) by:</p>
             <label class="opt"><input type="radio" name="q1-7" value="0"> Ignoring how B relates to any other event</label>
             <label class="opt"><input type="radio" name="q1-7" value="1"> Dividing P(B) by P(A)</label>
@@ -584,7 +584,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q1-7" value="3"> Assuming A and B are independent</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(1)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(1)">Submit answers</button>
             <span class="quiz-feedback" id="fb-1"></span>
           </div>
         </div>
@@ -708,42 +708,42 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz2" data-chapter="2">
         <div class="quiz-head"><span>Quiz — §2 Random Variables</span><span>6 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">1. Number of failed welds on a car frame is best modeled as:</p>
             <label class="opt"><input type="radio" name="q2-1" value="0"> A continuous random variable</label>
             <label class="opt"><input type="radio" name="q2-1" value="1"> A constant</label>
             <label class="opt"><input type="radio" name="q2-1" value="2"> A discrete random variable</label>
             <label class="opt"><input type="radio" name="q2-1" value="3"> Not a random variable</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">2. For a continuous random variable, P(X = exactly 5.000...) is:</p>
             <label class="opt"><input type="radio" name="q2-2" value="0"> Always 1</label>
             <label class="opt"><input type="radio" name="q2-2" value="1"> Essentially 0 — probability comes from areas over intervals</label>
             <label class="opt"><input type="radio" name="q2-2" value="2"> Equal to the PDF value at 5</label>
             <label class="opt"><input type="radio" name="q2-2" value="3"> Undefined</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">3. If E[X] = 2 defects/box, and rework costs $15 per defect with no flat fee, the expected rework cost per box is:</p>
             <label class="opt"><input type="radio" name="q2-3" value="0"> $30</label>
             <label class="opt"><input type="radio" name="q2-3" value="1"> $15</label>
             <label class="opt"><input type="radio" name="q2-3" value="2"> $2</label>
             <label class="opt"><input type="radio" name="q2-3" value="3"> Cannot be determined</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">4. Variance measures:</p>
             <label class="opt"><input type="radio" name="q2-4" value="0"> The most likely single outcome</label>
             <label class="opt"><input type="radio" name="q2-4" value="1"> The total number of outcomes</label>
             <label class="opt"><input type="radio" name="q2-4" value="2"> The long-run average value</label>
             <label class="opt"><input type="radio" name="q2-4" value="3"> How spread out the values are around the mean</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">5. A PMF table's probabilities must:</p>
             <label class="opt"><input type="radio" name="q2-5" value="0"> All equal 1/n</label>
             <label class="opt"><input type="radio" name="q2-5" value="1"> Sum to any positive number</label>
             <label class="opt"><input type="radio" name="q2-5" value="2"> Sum to exactly 1, and each be between 0 and 1</label>
             <label class="opt"><input type="radio" name="q2-5" value="3"> Be strictly decreasing</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">6. Two discrete random variables have Cov(X,Y) = 0. This tells you:</p>
             <label class="opt"><input type="radio" name="q2-6" value="0"> X and Y must be independent</label>
             <label class="opt"><input type="radio" name="q2-6" value="1"> There's no linear association between them (a nonlinear relationship could still exist)</label>
@@ -751,7 +751,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q2-6" value="3"> Both variables must have zero variance</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(2)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(2)">Submit answers</button>
             <span class="quiz-feedback" id="fb-2"></span>
           </div>
         </div>
@@ -849,35 +849,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz3" data-chapter="3">
         <div class="quiz-head"><span>Quiz — §3 Distributions</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">1. Counting defective units out of a fixed batch of 50, each independently defective with the same probability, calls for:</p>
             <label class="opt"><input type="radio" name="q3-1" value="0"> Exponential</label>
             <label class="opt"><input type="radio" name="q3-1" value="1"> Binomial</label>
             <label class="opt"><input type="radio" name="q3-1" value="2"> Normal</label>
             <label class="opt"><input type="radio" name="q3-1" value="3"> None of these</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">2. Counting the number of network packet arrivals in a fixed one-minute window, at a constant average rate, calls for:</p>
             <label class="opt"><input type="radio" name="q3-2" value="0"> Binomial</label>
             <label class="opt"><input type="radio" name="q3-2" value="1"> Exponential</label>
             <label class="opt"><input type="radio" name="q3-2" value="2"> Poisson</label>
             <label class="opt"><input type="radio" name="q3-2" value="3"> Normal</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">3. For a Poisson distribution with rate λ:</p>
             <label class="opt"><input type="radio" name="q3-3" value="0"> The mean and variance are unrelated</label>
             <label class="opt"><input type="radio" name="q3-3" value="1"> The variance is always 1</label>
             <label class="opt"><input type="radio" name="q3-3" value="2"> The mean is always 0</label>
             <label class="opt"><input type="radio" name="q3-3" value="3"> The mean equals the variance, both equal to λ</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">4. A z-score of −1.5 means a measurement is:</p>
             <label class="opt"><input type="radio" name="q3-4" value="0"> 1.5 standard deviations below the mean</label>
             <label class="opt"><input type="radio" name="q3-4" value="1"> 1.5 units below zero</label>
             <label class="opt"><input type="radio" name="q3-4" value="2"> Impossible</label>
             <label class="opt"><input type="radio" name="q3-4" value="3"> 1.5 standard deviations above the mean</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">5. The Exponential distribution is the natural model for:</p>
             <label class="opt"><input type="radio" name="q3-5" value="0"> Number of defects on a fixed-size panel</label>
             <label class="opt"><input type="radio" name="q3-5" value="1"> Time until the next failure, given a constant failure rate</label>
@@ -885,7 +885,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q3-5" value="3"> Pass/fail counts in a fixed batch</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(3)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(3)">Submit answers</button>
             <span class="quiz-feedback" id="fb-3"></span>
           </div>
         </div>
@@ -974,35 +974,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz4" data-chapter="4">
         <div class="quiz-head"><span>Quiz — §4 Data Visualization</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">1. To compare torque consistency across 3 suppliers in one glance, the best choice is:</p>
             <label class="opt"><input type="radio" name="q4-1" value="0"> A single histogram of all data pooled together</label>
             <label class="opt"><input type="radio" name="q4-1" value="1"> A scatter plot</label>
             <label class="opt"><input type="radio" name="q4-1" value="2"> Side-by-side boxplots, one per supplier</label>
             <label class="opt"><input type="radio" name="q4-1" value="3"> A pie chart</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">2. The IQR (interquartile range) is calculated as:</p>
             <label class="opt"><input type="radio" name="q4-2" value="0"> Max − Min</label>
             <label class="opt"><input type="radio" name="q4-2" value="1"> Q3 − Q1</label>
             <label class="opt"><input type="radio" name="q4-2" value="2"> Mean − Median</label>
             <label class="opt"><input type="radio" name="q4-2" value="3"> Q1 + Q3</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">3. A right-skewed distribution typically has:</p>
             <label class="opt"><input type="radio" name="q4-3" value="0"> Mean well below the median</label>
             <label class="opt"><input type="radio" name="q4-3" value="1"> No tail at all</label>
             <label class="opt"><input type="radio" name="q4-3" value="2"> Mean exactly equal to the median</label>
             <label class="opt"><input type="radio" name="q4-3" value="3"> Mean pulled above the median by a long right tail</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">4. To catch a slow upward drift in a measurement over the course of a test, you need a plot that preserves:</p>
             <label class="opt"><input type="radio" name="q4-4" value="0"> The time order of the observations</label>
             <label class="opt"><input type="radio" name="q4-4" value="1"> Only the quartiles</label>
             <label class="opt"><input type="radio" name="q4-4" value="2"> Only the mean</label>
             <label class="opt"><input type="radio" name="q4-4" value="3"> The bin width</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">5. On a boxplot, the line inside the box represents the:</p>
             <label class="opt"><input type="radio" name="q4-5" value="0"> Mean</label>
             <label class="opt"><input type="radio" name="q4-5" value="1"> Mode</label>
@@ -1010,7 +1010,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q4-5" value="3"> Standard deviation</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(4)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(4)">Submit answers</button>
             <span class="quiz-feedback" id="fb-4"></span>
           </div>
         </div>
@@ -1153,63 +1153,63 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz5" data-chapter="5">
         <div class="quiz-head"><span>Quiz — §5 Statistical Inference</span><span>9 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">1. A z-test is appropriate instead of a t-test when:</p>
             <label class="opt"><input type="radio" name="q5-1" value="0"> The sample size is very small</label>
             <label class="opt"><input type="radio" name="q5-1" value="1"> The population standard deviation is known (or n is large)</label>
             <label class="opt"><input type="radio" name="q5-1" value="2"> The data is categorical</label>
             <label class="opt"><input type="radio" name="q5-1" value="3"> There are three or more groups</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">2. The z-test statistic for a proportion is:</p>
             <label class="opt"><input type="radio" name="q5-2" value="0"> (x̄ − \(μ_{0}\)) / s</label>
             <label class="opt"><input type="radio" name="q5-2" value="1"> p̂ / n</label>
             <label class="opt"><input type="radio" name="q5-2" value="2"> \((\hat{p} - p_0) / \sqrt{p_0(1-p_0)/n}\)</label>
             <label class="opt"><input type="radio" name="q5-2" value="3"> \(p_{0}\) − p̂</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">3. For a two-sided z-test at α = 0.05, the critical value is approximately:</p>
             <label class="opt"><input type="radio" name="q5-3" value="0"> ±1.00</label>
             <label class="opt"><input type="radio" name="q5-3" value="1"> ±1.96</label>
             <label class="opt"><input type="radio" name="q5-3" value="2"> ±3.00</label>
             <label class="opt"><input type="radio" name="q5-3" value="3"> ±0.05</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">4. If the computed |z| exceeds the critical value, the decision is:</p>
             <label class="opt"><input type="radio" name="q5-4" value="0"> Reject \(H_0\)</label>
             <label class="opt"><input type="radio" name="q5-4" value="1"> Fail to reject \(H_0\)</label>
             <label class="opt"><input type="radio" name="q5-4" value="2"> Increase α</label>
             <label class="opt"><input type="radio" name="q5-4" value="3"> Collect a smaller sample</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">5. A 95% confidence interval means:</p>
             <label class="opt"><input type="radio" name="q5-5" value="0"> 95% of individual data points fall in this range</label>
             <label class="opt"><input type="radio" name="q5-5" value="1"> Under repeated sampling, about 95% of such intervals would capture the true parameter</label>
             <label class="opt"><input type="radio" name="q5-5" value="2"> There's a 95% chance the sample mean is correct</label>
             <label class="opt"><input type="radio" name="q5-5" value="3"> The true mean is 95% of the sample mean</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">6. A Type I error occurs when:</p>
             <label class="opt"><input type="radio" name="q5-6" value="0"> You correctly fail to reject a true \(H_0\)</label>
             <label class="opt"><input type="radio" name="q5-6" value="1"> You correctly reject a false \(H_0\)</label>
             <label class="opt"><input type="radio" name="q5-6" value="2"> You fail to reject a false \(H_0\)</label>
             <label class="opt"><input type="radio" name="q5-6" value="3"> You reject a true \(H_0\) (a false alarm)</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">7. A smaller p-value indicates:</p>
             <label class="opt"><input type="radio" name="q5-7" value="0"> Stronger evidence against \(H_0\)</label>
             <label class="opt"><input type="radio" name="q5-7" value="1"> Stronger evidence for \(H_0\)</label>
             <label class="opt"><input type="radio" name="q5-7" value="2"> A larger sample size was used</label>
             <label class="opt"><input type="radio" name="q5-7" value="3"> The confidence interval is wider</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">8. Increasing the sample size n, holding s constant, causes the standard error to:</p>
             <label class="opt"><input type="radio" name="q5-8" value="0"> Increase</label>
             <label class="opt"><input type="radio" name="q5-8" value="1"> Stay the same</label>
             <label class="opt"><input type="radio" name="q5-8" value="2"> Decrease</label>
             <label class="opt"><input type="radio" name="q5-8" value="3"> Become undefined</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">9. In the alloy qualification example, the 95% CI (310.15, 318.25) lying entirely above 310 MPa tells you:</p>
             <label class="opt"><input type="radio" name="q5-9" value="0"> The batch definitely meets spec with certainty</label>
             <label class="opt"><input type="radio" name="q5-9" value="1"> It's consistent with rejecting \(H_0\): μ=310 in favor of μ&gt;310</label>
@@ -1217,7 +1217,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q5-9" value="3"> The standard deviation must be zero</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(5)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(5)">Submit answers</button>
             <span class="quiz-feedback" id="fb-5"></span>
           </div>
         </div>
@@ -1310,35 +1310,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz6" data-chapter="6">
         <div class="quiz-head"><span>Quiz — §6 One-Way ANOVA</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">1. One-way ANOVA is used to compare:</p>
             <label class="opt"><input type="radio" name="q6-1" value="0"> The means of three or more groups simultaneously</label>
             <label class="opt"><input type="radio" name="q6-1" value="1"> Two variances only</label>
             <label class="opt"><input type="radio" name="q6-1" value="2"> Only paired data</label>
             <label class="opt"><input type="radio" name="q6-1" value="3"> Correlation between two variables</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">2. A large F-statistic suggests:</p>
             <label class="opt"><input type="radio" name="q6-2" value="0"> Within-group variation dominates between-group variation</label>
             <label class="opt"><input type="radio" name="q6-2" value="1"> All group means are exactly equal</label>
             <label class="opt"><input type="radio" name="q6-2" value="2"> The sample size was too small</label>
             <label class="opt"><input type="radio" name="q6-2" value="3"> Between-group variation is large relative to within-group noise</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">3. Running three separate t-tests instead of one ANOVA on three groups mainly risks:</p>
             <label class="opt"><input type="radio" name="q6-3" value="0"> Getting the wrong sample size</label>
             <label class="opt"><input type="radio" name="q6-3" value="1"> Inflating the overall chance of at least one false-positive result</label>
             <label class="opt"><input type="radio" name="q6-3" value="2"> Making the F-statistic negative</label>
             <label class="opt"><input type="radio" name="q6-3" value="3"> Nothing — it's mathematically identical to ANOVA</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">4. If ANOVA rejects \(H_0\), the next natural step is:</p>
             <label class="opt"><input type="radio" name="q6-4" value="0"> Conclude every group differs from every other group</label>
             <label class="opt"><input type="radio" name="q6-4" value="1"> Stop — no further analysis is needed</label>
             <label class="opt"><input type="radio" name="q6-4" value="2"> Run a post-hoc test to find which specific groups differ</label>
             <label class="opt"><input type="radio" name="q6-4" value="3"> Recompute the grand mean</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">5. MSW (mean square within) primarily reflects:</p>
             <label class="opt"><input type="radio" name="q6-5" value="0"> Natural, random variability inside each group</label>
             <label class="opt"><input type="radio" name="q6-5" value="1"> Differences between group means</label>
@@ -1346,7 +1346,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q6-5" value="3"> The grand mean</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(6)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(6)">Submit answers</button>
             <span class="quiz-feedback" id="fb-6"></span>
           </div>
         </div>
@@ -1443,35 +1443,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz7" data-chapter="7">
         <div class="quiz-head"><span>Quiz — §7 Regression</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">1. The slope \(b_1\) in \(\hat{y} = b_0 + b_1x\) represents:</p>
             <label class="opt"><input type="radio" name="q7-1" value="0"> The predicted y when x = 0</label>
             <label class="opt"><input type="radio" name="q7-1" value="1"> The total variation explained</label>
             <label class="opt"><input type="radio" name="q7-1" value="2"> The predicted change in y per one-unit increase in x</label>
             <label class="opt"><input type="radio" name="q7-1" value="3"> The correlation coefficient</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">2. \(R^{2}\) = 0.85 means:</p>
             <label class="opt"><input type="radio" name="q7-2" value="0"> The slope is 0.85</label>
             <label class="opt"><input type="radio" name="q7-2" value="1"> 85% of the variation in y is explained by the linear relationship with x</label>
             <label class="opt"><input type="radio" name="q7-2" value="2"> 85% of data points are outliers</label>
             <label class="opt"><input type="radio" name="q7-2" value="3"> The intercept is 0.85</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">3. Least squares regression chooses the line that:</p>
             <label class="opt"><input type="radio" name="q7-3" value="0"> Passes through the most points exactly</label>
             <label class="opt"><input type="radio" name="q7-3" value="1"> Maximizes \(R^{2}\)  to exactly 1</label>
             <label class="opt"><input type="radio" name="q7-3" value="2"> Has the steepest possible slope</label>
             <label class="opt"><input type="radio" name="q7-3" value="3"> Minimizes the sum of squared residuals</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">4. Predicting y for an x-value far outside the range of the original data is risky because:</p>
             <label class="opt"><input type="radio" name="q7-4" value="0"> The linear relationship may not hold outside the observed range</label>
             <label class="opt"><input type="radio" name="q7-4" value="1"> \(R^{2}\) automatically becomes negative</label>
             <label class="opt"><input type="radio" name="q7-4" value="2"> The slope changes sign automatically</label>
             <label class="opt"><input type="radio" name="q7-4" value="3"> It is never actually a problem</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">5. A residual is defined as:</p>
             <label class="opt"><input type="radio" name="q7-5" value="0"> ŷ − x̄</label>
             <label class="opt"><input type="radio" name="q7-5" value="1"> Observed y minus predicted ŷ</label>
@@ -1479,7 +1479,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q7-5" value="3"> Predicted ŷ minus the mean of x</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(7)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(7)">Submit answers</button>
             <span class="quiz-feedback" id="fb-7"></span>
           </div>
         </div>
@@ -1576,35 +1576,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz8" data-chapter="8">
         <div class="quiz-head"><span>Quiz — §8 Control Charts</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">1. The R chart should generally be checked for control:</p>
             <label class="opt"><input type="radio" name="q8-1" value="0"> After the X̄ chart, never before</label>
             <label class="opt"><input type="radio" name="q8-1" value="1"> Only if the X̄ chart looks bad</label>
             <label class="opt"><input type="radio" name="q8-1" value="2"> Before trusting the X̄ chart, since spread affects the X̄ limits</label>
             <label class="opt"><input type="radio" name="q8-1" value="3"> It is not related to the X̄ chart</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">2. Control limits (UCL/LCL) are typically set at:</p>
             <label class="opt"><input type="radio" name="q8-2" value="0"> The customer's specification limits</label>
             <label class="opt"><input type="radio" name="q8-2" value="1"> ±3 standard deviations of the subgroup statistic</label>
             <label class="opt"><input type="radio" name="q8-2" value="2"> The minimum and maximum ever observed</label>
             <label class="opt"><input type="radio" name="q8-2" value="3"> Exactly at the center line</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">3. A "special cause" of variation is best described as:</p>
             <label class="opt"><input type="radio" name="q8-3" value="0"> Normal, expected noise inherent to the process</label>
             <label class="opt"><input type="radio" name="q8-3" value="1"> A calculation error in the control limits</label>
             <label class="opt"><input type="radio" name="q8-3" value="2"> The customer's spec limit</label>
             <label class="opt"><input type="radio" name="q8-3" value="3"> An identifiable, assignable event pushing the process off its normal behavior</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">4. A process that is "in control" but not "capable" means:</p>
             <label class="opt"><input type="radio" name="q8-4" value="0"> The process is stable/predictable but still produces out-of-spec output</label>
             <label class="opt"><input type="radio" name="q8-4" value="1"> The process has no variation at all</label>
             <label class="opt"><input type="radio" name="q8-4" value="2"> The control chart was drawn incorrectly</label>
             <label class="opt"><input type="radio" name="q8-4" value="3"> Every part automatically meets spec</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">5. A long run of consecutive points all trending upward, even while inside the control limits, should be treated as:</p>
             <label class="opt"><input type="radio" name="q8-5" value="0"> Irrelevant, since no limit was breached</label>
             <label class="opt"><input type="radio" name="q8-5" value="1"> Proof the control limits are wrong</label>
@@ -1612,7 +1612,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q8-5" value="3"> Evidence the process improved</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(8)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(8)">Submit answers</button>
             <span class="quiz-feedback" id="fb-8"></span>
           </div>
         </div>
@@ -1710,35 +1710,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz9" data-chapter="9">
         <div class="quiz-head"><span>Quiz — §9 Reliability</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">1. In a series system, the overall reliability is always:</p>
             <label class="opt"><input type="radio" name="q9-1" value="0"> Higher than any single component's reliability</label>
             <label class="opt"><input type="radio" name="q9-1" value="1"> Less than or equal to the reliability of the weakest component</label>
             <label class="opt"><input type="radio" name="q9-1" value="2"> Independent of the individual components</label>
             <label class="opt"><input type="radio" name="q9-1" value="3"> Always exactly 1</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">2. Adding a redundant (parallel) component to a system generally:</p>
             <label class="opt"><input type="radio" name="q9-2" value="0"> Decreases system reliability</label>
             <label class="opt"><input type="radio" name="q9-2" value="1"> Has no effect on reliability</label>
             <label class="opt"><input type="radio" name="q9-2" value="2"> Increases system reliability</label>
             <label class="opt"><input type="radio" name="q9-2" value="3"> Only matters for series systems</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">3. For a constant-hazard (exponential) failure process with rate λ, the MTBF equals:</p>
             <label class="opt"><input type="radio" name="q9-3" value="0"> λ</label>
             <label class="opt"><input type="radio" name="q9-3" value="1"> \(λ^{2}\)</label>
             <label class="opt"><input type="radio" name="q9-3" value="2"> \(e^{−λ}\)</label>
             <label class="opt"><input type="radio" name="q9-3" value="3"> 1/λ</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">4. The "useful life" phase of the bathtub curve is characterized by:</p>
             <label class="opt"><input type="radio" name="q9-4" value="0"> A roughly constant hazard rate</label>
             <label class="opt"><input type="radio" name="q9-4" value="1"> A rapidly increasing hazard rate</label>
             <label class="opt"><input type="radio" name="q9-4" value="2"> A rapidly decreasing hazard rate</label>
             <label class="opt"><input type="radio" name="q9-4" value="3"> Zero probability of failure</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">5. A series system has two components with \(R_{1}\)=0.9 and \(R_{2}\)=0.8. The system reliability is:</p>
             <label class="opt"><input type="radio" name="q9-5" value="0"> 0.72</label>
             <label class="opt"><input type="radio" name="q9-5" value="1"> 1.70</label>
@@ -1746,7 +1746,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q9-5" value="3"> 0.90</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(9)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(9)">Submit answers</button>
             <span class="quiz-feedback" id="fb-9"></span>
           </div>
         </div>
@@ -1841,35 +1841,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz10" data-chapter="10">
         <div class="quiz-head"><span>Quiz — §10 Study Designs</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">1. The key feature that lets an experimental study support a causal claim is:</p>
             <label class="opt"><input type="radio" name="q10-1" value="0"> A large sample size, regardless of assignment method</label>
             <label class="opt"><input type="radio" name="q10-1" value="1"> Random assignment of units to treatment groups</label>
             <label class="opt"><input type="radio" name="q10-1" value="2"> Collecting data over a longer time period</label>
             <label class="opt"><input type="radio" name="q10-1" value="3"> Using a computer to record the data</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">2. A confounding variable is best defined as:</p>
             <label class="opt"><input type="radio" name="q10-2" value="0"> Any variable that is hard to measure</label>
             <label class="opt"><input type="radio" name="q10-2" value="1"> The main outcome variable of interest</label>
             <label class="opt"><input type="radio" name="q10-2" value="2"> A variable related to both the treatment/exposure and the outcome, capable of creating a misleading association</label>
             <label class="opt"><input type="radio" name="q10-2" value="3"> A variable that is always randomly assigned</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">3. "Ice cream sales and drowning deaths rise and fall together" is a classic example of:</p>
             <label class="opt"><input type="radio" name="q10-3" value="0"> Ice cream directly causing drownings</label>
             <label class="opt"><input type="radio" name="q10-3" value="1"> Confounding — a lurking variable (hot weather) driving both</label>
             <label class="opt"><input type="radio" name="q10-3" value="2"> A randomized experiment</label>
             <label class="opt"><input type="radio" name="q10-3" value="3"> A properly controlled causal study</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">4. On its own, an observational study can generally:</p>
             <label class="opt"><input type="radio" name="q10-4" value="0"> Show an association but not, by itself, establish causation</label>
             <label class="opt"><input type="radio" name="q10-4" value="1"> Prove causation as reliably as a randomized experiment</label>
             <label class="opt"><input type="radio" name="q10-4" value="2"> Eliminate all confounding automatically</label>
             <label class="opt"><input type="radio" name="q10-4" value="3"> Never be useful for engineering decisions</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">5. Randomization in an experiment primarily works by:</p>
             <label class="opt"><input type="radio" name="q10-5" value="0"> Guaranteeing a statistically significant result</label>
             <label class="opt"><input type="radio" name="q10-5" value="1"> Removing the need for a control group</label>
@@ -1877,7 +1877,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q10-5" value="3"> Balancing both known and unknown confounders across groups on average</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(10)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(10)">Submit answers</button>
             <span class="quiz-feedback" id="fb-10"></span>
           </div>
         </div>
@@ -1972,35 +1972,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz11" data-chapter="11">
         <div class="quiz-head"><span>Quiz — §11 Chi-Square Tests</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">1. A chi-square goodness-of-fit test compares:</p>
             <label class="opt"><input type="radio" name="q11-1" value="0"> Two sample means</label>
             <label class="opt"><input type="radio" name="q11-1" value="1"> Observed category counts to expected counts under a hypothesized distribution</label>
             <label class="opt"><input type="radio" name="q11-1" value="2"> A slope to zero</label>
             <label class="opt"><input type="radio" name="q11-1" value="3"> Two variances</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">2. A chi-square test of independence is applied to:</p>
             <label class="opt"><input type="radio" name="q11-2" value="0"> A single continuous variable</label>
             <label class="opt"><input type="radio" name="q11-2" value="1"> Paired before/after measurements</label>
             <label class="opt"><input type="radio" name="q11-2" value="2"> A contingency table of two categorical variables</label>
             <label class="opt"><input type="radio" name="q11-2" value="3"> A regression residual plot</label>
           </div>
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">3. Degrees of freedom for a goodness-of-fit test with k categories:</p>
             <label class="opt"><input type="radio" name="q11-3" value="0"> k − 1</label>
             <label class="opt"><input type="radio" name="q11-3" value="1"> k</label>
             <label class="opt"><input type="radio" name="q11-3" value="2"> k + 1</label>
             <label class="opt"><input type="radio" name="q11-3" value="3"> 2k</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">4. Degrees of freedom for an r×c contingency table:</p>
             <label class="opt"><input type="radio" name="q11-4" value="0"> r + c</label>
             <label class="opt"><input type="radio" name="q11-4" value="1"> (r−1)(c−1)</label>
             <label class="opt"><input type="radio" name="q11-4" value="2"> r×c</label>
             <label class="opt"><input type="radio" name="q11-4" value="3"> r−c</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">5. Chi-square tests are designed for:</p>
             <label class="opt"><input type="radio" name="q11-5" value="0"> Continuous measurement data only</label>
             <label class="opt"><input type="radio" name="q11-5" value="1"> Time-series data</label>
@@ -2008,7 +2008,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q11-5" value="3"> Categorical / count data</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(11)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(11)">Submit answers</button>
             <span class="quiz-feedback" id="fb-11"></span>
           </div>
         </div>
@@ -2104,35 +2104,35 @@ dl.defs .katex{font-size:1.0em;}
       <div class="quiz" id="quiz12" data-chapter="12">
         <div class="quiz-head"><span>Quiz — §12 A/B Testing</span><span>5 questions</span></div>
         <div class="quiz-body">
-          <div class="q-item" data-correct="0">
+          <div class="q-item">
             <p class="q-text">1. In A/B testing, random assignment of units to A or B primarily serves to:</p>
             <label class="opt"><input type="radio" name="q12-1" value="0"> Control for confounding variables between the two groups</label>
             <label class="opt"><input type="radio" name="q12-1" value="1"> Guarantee variant B wins</label>
             <label class="opt"><input type="radio" name="q12-1" value="2"> Reduce the sample size needed</label>
             <label class="opt"><input type="radio" name="q12-1" value="3"> Eliminate the need for a metric</label>
           </div>
-          <div class="q-item" data-correct="2">
+          <div class="q-item">
             <p class="q-text">2. The pooled proportion in a two-sample proportion test is used to:</p>
             <label class="opt"><input type="radio" name="q12-2" value="0"> Replace the need for a control group</label>
             <label class="opt"><input type="radio" name="q12-2" value="1"> Report the final decision</label>
             <label class="opt"><input type="radio" name="q12-2" value="2"> Estimate the common proportion under \(H_0\) for computing the standard error</label>
             <label class="opt"><input type="radio" name="q12-2" value="3"> Measure practical significance directly</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">3. A result can be statistically significant but practically insignificant when:</p>
             <label class="opt"><input type="radio" name="q12-3" value="0"> The sample size is too small to compute a p-value</label>
             <label class="opt"><input type="radio" name="q12-3" value="1"> The effect size is tiny even though a huge sample makes it detectable</label>
             <label class="opt"><input type="radio" name="q12-3" value="2"> Randomization was skipped</label>
             <label class="opt"><input type="radio" name="q12-3" value="3"> This can never actually happen</label>
           </div>
-          <div class="q-item" data-correct="3">
+          <div class="q-item">
             <p class="q-text">4. Which is essential for a valid A/B test comparison?</p>
             <label class="opt"><input type="radio" name="q12-4" value="0"> Running variant B first, then variant A afterward</label>
             <label class="opt"><input type="radio" name="q12-4" value="1"> Letting users choose which variant they prefer</label>
             <label class="opt"><input type="radio" name="q12-4" value="2"> Using the largest possible sample size only</label>
             <label class="opt"><input type="radio" name="q12-4" value="3"> Running both variants concurrently, under matched conditions, with random assignment</label>
           </div>
-          <div class="q-item" data-correct="1">
+          <div class="q-item">
             <p class="q-text">5. In Work Order #4646, z ≈ 3.03 against a critical value of ±1.96 leads to:</p>
             <label class="opt"><input type="radio" name="q12-5" value="0"> Fail to reject \(H_0\) — no real difference between A and B</label>
             <label class="opt"><input type="radio" name="q12-5" value="1"> Reject \(H_0\) — a statistically significant difference between A and B</label>
@@ -2140,7 +2140,7 @@ dl.defs .katex{font-size:1.0em;}
             <label class="opt"><input type="radio" name="q12-5" value="3"> Proof that B is practically better regardless of cost</label>
           </div>
           <div class="quiz-actions">
-            <button class="check-btn" onclick="gradeQuiz(12)">Check answers</button>
+            <button class="check-btn" onclick="gradeQuiz(12)">Submit answers</button>
             <span class="quiz-feedback" id="fb-12"></span>
           </div>
         </div>
@@ -2209,12 +2209,12 @@ function gradeQuiz(ch){
   const quiz = document.getElementById('quiz'+ch);
   const fb = document.getElementById('fb-'+ch);
 
-  // Require a valid Student ID before grading, so results are never lost unattributed.
+  // Require a valid Student ID before submitting, so results are never lost unattributed.
   if(SHEET_WEBHOOK_URL && !studentId){
     fb.classList.add('show');
     fb.classList.remove('pass','fail');
     fb.classList.add('warn');
-    fb.textContent = 'Enter your Student ID (last 4 digits) above before checking your answers.';
+    fb.textContent = 'Enter your Student ID (last 4 digits) above before submitting your answers.';
     idInput.classList.remove('needs-attention');
     void idInput.offsetWidth; // restart animation if triggered again
     idInput.classList.add('needs-attention');
@@ -2225,7 +2225,6 @@ function gradeQuiz(ch){
   fb.classList.remove('warn');
 
   const items = quiz.querySelectorAll('.q-item');
-  let correct = 0;
   let allAnswered = true;
   const rows = [];
   items.forEach(item=>{
@@ -2233,43 +2232,33 @@ function gradeQuiz(ch){
     const chosen = quiz.querySelector('input[name="'+name+'"]:checked');
     item.classList.remove('correct','incorrect');
     if(!chosen){ allAnswered = false; return; }
-    const correctVal = item.dataset.correct;
-    const isCorrect = chosen.value === correctVal;
-    if(isCorrect){
-      item.classList.add('correct');
-      correct++;
-    } else {
-      item.classList.add('incorrect');
-    }
     const qNum = name.split('-')[1];
     const selectedLabel = chosen.closest('label');
     const selectedText = selectedLabel ? selectedLabel.textContent.trim() : chosen.value;
-    const correctInput = quiz.querySelector('input[name="'+name+'"][value="'+correctVal+'"]');
-    const correctLabel = correctInput ? correctInput.closest('label') : null;
-    const correctText = correctLabel ? correctLabel.textContent.trim() : correctVal;
+    // Grading happens server-side (against the "answers" sheet) — the browser
+    // never has access to the correct answers, only what the student picked.
     rows.push({
       studentIdLast4Digits: studentId || '(no ID entered)',
       chapter: ch,
       question: qNum,
-      selectedAnswer: selectedText,
-      correctAnswer: correctText,
-      isCorrect: isCorrect
+      selectedIndex: chosen.value,
+      selectedAnswer: selectedText
     });
   });
   fb.classList.add('show');
   if(!allAnswered){
-    fb.textContent = 'Answer all '+items.length+' questions before checking.';
+    fb.textContent = 'Answer all '+items.length+' questions before submitting.';
     fb.classList.remove('pass','fail');
     return;
   }
-  const pct = Math.round((correct/items.length)*100);
-  scores[ch] = pct;
-  fb.textContent = correct+' / '+items.length+' correct ('+pct+'%)';
-  fb.classList.toggle('pass', pct>=70);
-  fb.classList.toggle('fail', pct<70);
+
+  scores[ch] = 'submitted';
+  fb.textContent = 'Submitted — your instructor will have your results.';
+  fb.classList.remove('pass','fail');
+  fb.classList.add('pass');
   const dot = document.getElementById('dot-'+ch);
-  dot.classList.toggle('pass', pct>=70);
-  dot.classList.toggle('fail', pct<70);
+  dot.classList.remove('fail');
+  dot.classList.add('pass');
 
   drawTracker();
   submitToSheet(rows);
@@ -2295,58 +2284,46 @@ function drawTracker(){
   const marginL = 34, marginR = 16, marginT = 12, marginB = 18;
   const plotW = W - marginL - marginR;
   const plotH = H - marginT - marginB;
-  const CL = 70;   // passing threshold, center line
-  const UCL = 100;
-  const LCL = 0;
-  const yFor = v => marginT + plotH - (v/100)*plotH;
+  const centerY = marginT + plotH/2;
 
-  const attempted = Object.keys(scores).filter(k=>scores[k]!==null).map(Number);
+  // Grading happens server-side now, so this tracks submission progress
+  // per chapter rather than a score — the browser never sees correctness.
+  const submitted = Object.keys(scores).filter(k=>scores[k]!==null).map(Number);
   let svgParts = '';
 
-  // grid + limit lines
-  svgParts += `<line x1="${marginL}" y1="${yFor(UCL)}" x2="${W-marginR}" y2="${yFor(UCL)}" stroke="#3E6F94" stroke-width="1" stroke-dasharray="4 3"/>`;
-  svgParts += `<line x1="${marginL}" y1="${yFor(CL)}" x2="${W-marginR}" y2="${yFor(CL)}" stroke="#5C86A6" stroke-width="1"/>`;
-  svgParts += `<text x="${marginL-6}" y="${yFor(UCL)+3}" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#7FA6C4">100</text>`;
-  svgParts += `<text x="${marginL-6}" y="${yFor(CL)+3}" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#7FA6C4">70</text>`;
-  svgParts += `<text x="${marginL-6}" y="${yFor(LCL)+3}" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#7FA6C4">0</text>`;
+  svgParts += `<line x1="${marginL}" y1="${centerY}" x2="${W-marginR}" y2="${centerY}" stroke="#5C86A6" stroke-width="1"/>`;
+  svgParts += `<text x="${marginL-6}" y="${centerY+3}" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#7FA6C4">✓</text>`;
 
-  // x positions for each of the 8 chapters, evenly spaced
   const xFor = ch => marginL + ((ch-1)/(TOTAL_CH-1))*plotW;
 
-  // connecting line between attempted points, in chapter order
-  if(attempted.length>1){
-    const sorted = attempted.slice().sort((a,b)=>a-b);
+  if(submitted.length>1){
+    const sorted = submitted.slice().sort((a,b)=>a-b);
     let pathD = '';
     sorted.forEach((ch,i)=>{
-      const x = xFor(ch), y = yFor(scores[ch]);
-      pathD += (i===0?'M':'L')+x+' '+y+' ';
+      const x = xFor(ch);
+      pathD += (i===0?'M':'L')+x+' '+centerY+' ';
     });
     svgParts += `<path d="${pathD}" fill="none" stroke="#8FC6E8" stroke-width="1.5"/>`;
   }
 
-  // baseline axis ticks for all 8 chapter slots (faint)
   for(let ch=1; ch<=TOTAL_CH; ch++){
     const x = xFor(ch);
     svgParts += `<line x1="${x}" y1="${marginT}" x2="${x}" y2="${H-marginB}" stroke="#1C3A56" stroke-width="1"/>`;
   }
 
-  // points
-  attempted.forEach(ch=>{
-    const x = xFor(ch), y = yFor(scores[ch]);
-    const pass = scores[ch] >= 70;
-    const color = pass ? '#6FCF87' : '#E8926A';
-    svgParts += `<circle cx="${x}" cy="${y}" r="5" fill="${color}" stroke="#0F2033" stroke-width="1.5"/>`;
-    svgParts += `<text x="${x}" y="${y-9}" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="${color}">§${ch}</text>`;
+  submitted.forEach(ch=>{
+    const x = xFor(ch);
+    svgParts += `<circle cx="${x}" cy="${centerY}" r="5" fill="#6FCF87" stroke="#0F2033" stroke-width="1.5"/>`;
+    svgParts += `<text x="${x}" y="${centerY-9}" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="#6FCF87">§${ch}</text>`;
   });
 
   svg.innerHTML = svgParts;
 
   const status = document.getElementById('tracker-status');
-  if(attempted.length===0){
-    status.textContent = 'no chapters completed yet';
+  if(submitted.length===0){
+    status.textContent = 'no chapters submitted yet';
   } else {
-    const passCount = attempted.filter(ch=>scores[ch]>=70).length;
-    status.textContent = attempted.length+' of '+TOTAL_CH+' chapters attempted · '+passCount+' passed (≥70%)';
+    status.textContent = submitted.length+' of '+TOTAL_CH+' chapters submitted — scores available in the class gradebook';
   }
 }
 drawTracker();
